@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Welcome to Voyage Budgeter!</h1>
+<hr />
+<p>Save your money before you book your trip</p>
+
+</br>
+
+<h3>Please Log In</h3>
+<a href="{% url 'login' %}">
+    <button type="submit" class="btn btn-primary">Log In</button>
+</a>
+
+<h3><span class="or">or</span> Sign Up</h3>
+<a href="{% url 'signup' %}">
+    <button type="submit" class="btn btn-secondary">Sign Up</button>
+</a>
+
+{% endblock %}
