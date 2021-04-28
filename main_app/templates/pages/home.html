@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
+{% if user.is_authenticated %}
+<h1>Welcome back {{ user.username }}</h1>
+{% else %}
 <h1>Welcome to Voyage Budgeter!</h1>
 <hr />
 <p>Save your money before you book your trip</p>
@@ -16,5 +19,6 @@
 <a href="{% url 'signup' %}">
     <button type="submit" class="btn btn-secondary">Sign Up</button>
 </a>
+{% endif %}
 
 {% endblock %}
