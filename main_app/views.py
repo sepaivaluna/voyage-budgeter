@@ -38,16 +38,24 @@ def budgets_index(request):
   }
   return render(request, 'pages/budget/index.html', context)
 
-
-
 # Show budget details
 def budget_detail(request, budget_id):
     budget = Budget.objects.get(id=budget_id)
+    # below is how we only get the expenses that belong to this budget
+    expenditures = Expenditure.objects.filter(budget = budget)
+    total_expenses = 0
+    # I want to add the expenses and save it in total-expenses variable
+    for expenditure in expenditures:
+      total_expenses += expenditure.amount
+    # subtracting the expenses from my original budget
+    after_expenses_budget = budget.initial_funds - total_expenses
+
     context = {
-        'budget': budget
+        'budget': budget,
+        'total_expenses': total_expenses,
+        'after_expenses_budget': after_expenses_budget
     }
     return render(request, 'pages/budget/detail.html', context)
-
 
 
 # Create new Budget

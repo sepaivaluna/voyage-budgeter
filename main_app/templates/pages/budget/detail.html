@@ -6,7 +6,7 @@
     <div class="card">
         <div class="card-content">
           <span class="card-title">{{ budget.name }}</span>
-          <p>Funds Remaining: {{ budget.initial_funds }}</p>
+          <p>Funds Remaining: ${{ after_expenses_budget }}</p>
           <h3>Trip Info:</h3>
           <p>Destination: {{ budget.trip_destination }}</p>
           <p>Description: {{ budget.trip_description }}</p>
@@ -41,9 +41,9 @@
                   {% endfor %}
                 </tbody>
                 <tr>
-                    <td>Total: {{ expenditure.amount }}</td>
+                    <td>Total:</td>
                     <td></td>
-                    <td>$$</td>
+                    <td>${{ total_expenses }}</td>
                     <td></td>
                 </tr>
               </table>
