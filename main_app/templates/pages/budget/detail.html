@@ -40,12 +40,18 @@
                     </tr>
                   {% endfor %}
                 </tbody>
+                {% if total_expenses > 0 %}
                 <tr>
                     <td>Total:</td>
                     <td></td>
                     <td>${{ total_expenses }}</td>
                     <td></td>
                 </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4">You haven't made any purchases yet.</td>
+                </tr>
+                {% endif %}
               </table>
         </div>
     </div>
