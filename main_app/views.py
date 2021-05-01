@@ -36,9 +36,21 @@ def signup(request):
 def budgets_index(request):
   budgets = Budget.objects.filter(user=request.user)
   expenditure_form = ExpenditureForm()
+  
+  for budget in budgets:
+    if budget.remaining_funds < (budget.initial_funds * .25):
+      budget.color = '#cc3300'
+    elif budget.remaining_funds < (budget.initial_funds * .50):
+      budget.color = '#ff9966'
+    elif budget.remaining_funds < (budget.initial_funds * .75):
+      budget.color = '#ffcc00'
+    elif budget.remaining_funds < (budget.initial_funds * .90):
+      budget.color = '#99cc33'
+    elif budget.remaining_funds >= (budget.initial_funds * .90):
+      budget.color = '#339900'
 
-  Budget.objects.order_by('name')
-  color = 'gray'
+    print(budget.color)
+    budget.save()
   context = {
     'budgets': budgets,
     'expenditure_form': expenditure_form 

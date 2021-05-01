@@ -17,16 +17,24 @@
         </ul>
         <div class="tab-content card-body" id="myTabContent">
             <div class="tab-pane fade show active" id="home-{{budget.id}}" role="tabpanel" aria-labelledby="home-tab">
+                
                 {% if budget.remaining_funds == None %}
-                <p>Funds Remaining: ${{ budget.initial_funds }}</p>
+                <p class="h3" style="color: {{budget.color}}">Funds Remaining: ${{ budget.initial_funds }}</p>
                 {% else %}
-                <p>Funds Remaining: ${{ budget.remaining_funds }}</p>
+                <p class="h3" style="color: {{budget.color}}">Funds Remaining: ${{ budget.remaining_funds }}</p>
+                {% endif %}
+                {% if budget.color == '#ff9966' %}
+                <br>
+                <p class=""><span class="h5" style="color: {{budget.color}}">WARNING!</span> You have spent more than half of your budget</p>
+                {% elif budget.color == '#cc3300' %}
+                <p class=""><span class="h5" style="color: {{budget.color}}">Danger!</span> You have spent more than 75% of your budget</p>
                 {% endif %}
             </div>
             <div class="tab-pane fade" id="profile-{{budget.id}}" role="tabpanel" aria-labelledby="profile-tab">
+                {% if budget.total_spent > 0 %}
                 <form action="{% url 'add_expense' budget.id %}" method="post">
                     {% csrf_token %}
-                    <input type="date" name="date" class="form-control" placeholder="Select Date"/>
+                    <input type="date" name="date" class="form-control" placeholder="Select Date" required/>
                     <input type="text" name="name" class="form-control" placeholder="name" required>
                     <textarea type="text" name="description" class="form-control" placeholder="description" required></textarea>
                     $<input type="number" name="amount" placeholder="amount" required>
@@ -35,10 +43,10 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Name</th>
-                            <th>Amount</th>
-                            <th colspan="2">Description</th>
+                            <th id="date">Date</th>
+                            <th id="name">Name</th>
+                            <th id="amount">Amount</th>
+                            <th id="description" colspan="2">Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,17 +60,8 @@
                         </tr>
                       {% endfor %}
                     </tbody>
-                    {% if budget.total_spent > 0 %}
-                    <tr>
-                        <td>Total:</td>
-                        <td></td>
-                        <td>${{ budget.total_spent }}</td>
-                        <td></td>
-                    </tr>
                     {% else %}
-                    <tr>
-                        <td colspan="5">You haven't made any purchases yet.</td>
-                    </tr>
+                        <h3>You haven't made any purchases yet.</h3>
                     {% endif %}
                   </table>
             </div>
@@ -80,5 +79,20 @@
 </div>
 </br>
 {% endfor %}
-
-{% endblock %}
+<script>
+    $('th').click(function(){
+    var table = $(this).parents('table').eq(0)
+    var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+    this.asc = !this.asc
+    if (!this.asc){rows = rows.reverse()}
+    for (var i = 0; i < rows.length; i++){table.append(rows[i])}
+    })
+    function comparer(index) {
+        return function(a, b) {
+            var valA = getCellValue(a, index), valB = getCellValue(b, index)
+            return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+        }
+    }
+    function getCellValue(row, index){ return $(row).children('td').eq(index).text() }
+</script>
+{% endblock %}  
