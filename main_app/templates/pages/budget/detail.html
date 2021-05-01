@@ -45,6 +45,7 @@
                         <td>{{expenditure.name}}</td>
                         <td>${{expenditure.amount}}</td>
                         <td>{{ expenditure.description}}</td>
+                        <td><a href="{% url 'remove_expense' budget.id expenditure.id %}" class="btn btn-danger">Delete</a></td>
                     </tr>
                   {% endfor %}
                 </tbody>

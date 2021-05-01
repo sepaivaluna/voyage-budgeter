@@ -13,6 +13,7 @@ urlpatterns = [
 
     # expense urls
     path('budgets/<int:budget_id>/add_expense', views.add_expense, name="add_expense"),
+    path('budgets/<int:budget_id>/remove_expense/<int:expense_id>/', views.remove_expense, name='remove_expense'),
 
     # user urls
     path('accounts/signup/', views.signup, name='signup'),

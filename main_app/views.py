@@ -34,11 +34,11 @@ def signup(request):
 
 # Show all budgets
 def budgets_index(request):
-  budgets = Budget.objects.all()
+  budgets = Budget.objects.filter(user=request.user)
   expenditure_form = ExpenditureForm()
 
-  Expenditure.objects.order_by('date')
-
+  Budget.objects.order_by('name')
+  color = 'gray'
   context = {
     'budgets': budgets,
     'expenditure_form': expenditure_form 
@@ -56,7 +56,9 @@ def budget_detail(request, budget_id):
       total_expenses += expenditure.amount
     # subtracting the expenses from my original budget
     after_expenses_budget = budget.initial_funds - total_expenses
-
+    budget.remaining_funds = after_expenses_budget
+    budget.total_spent = total_expenses
+    budget.save()
     context = {
         'budget': budget,
         'total_expenses': total_expenses,
@@ -86,7 +88,6 @@ class BudgetDelete(DeleteView):
   model = Budget
   success_url = '/budgets/'
 
-
 # Add expenditure to Budget
 def add_expense(request, budget_id):
   form = ExpenditureForm(request.POST)
@@ -96,3 +97,16 @@ def add_expense(request, budget_id):
     new_expense.budget_id = budget_id
     new_expense.save()
   return redirect('detail', budget_id=budget_id)
+
+# Edit expenditure from Budget
+
+
+# Delete expenditure from Budget
+def remove_expense(request, budget_id, expense_id):
+  budget = Budget.objects.get(id=budget_id)
+  expenditures = Expenditure.objects.filter(budget = budget)
+  for expenditure in expenditures:
+    if expenditure.id == expense_id:
+      expenditure.delete()
+  return redirect('detail', budget_id=budget_id)
+

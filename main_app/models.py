@@ -12,12 +12,18 @@ class Budget(models.Model):
     trip_destination = models.CharField(max_length=60)
     trip_description = models.TextField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    remaining_funds = models.IntegerField(null=True)
+    total_spent = models.IntegerField(null=True)
+    color = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return self.name
     
     def get_absolute_url(self):
         return reverse('detail', kwargs={'budget_id': self.id})
+
+    class Meta:
+        ordering = ['name']
 
 class Expenditure(models.Model):
     name = models.CharField(max_length=60)
@@ -33,3 +39,6 @@ class Expenditure(models.Model):
     # Add this method
     def get_absolute_url(self):
         return reverse('detail', kwargs={'budget_id': self.id})
+
+    class Meta:
+        ordering = ['-date']
