@@ -5,6 +5,10 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Budget, Expenditure
 from .forms import ExpenditureForm
 
+# Using this to sort the dates
+from django.db.models import DateTimeField
+from django.db.models.functions import Trunc
+
 # Home
 def home(request):
     return render(request, 'pages/home.html')
@@ -32,6 +36,9 @@ def signup(request):
 def budgets_index(request):
   budgets = Budget.objects.all()
   expenditure_form = ExpenditureForm()
+
+  Expenditure.objects.order_by('date')
+
   context = {
     'budgets': budgets,
     'expenditure_form': expenditure_form 

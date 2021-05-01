@@ -24,10 +24,11 @@ class Expenditure(models.Model):
     description = models.TextField(max_length=255)
     amount = models.IntegerField()
     budget = models.ForeignKey(Budget, on_delete=CASCADE)
+    date = models.DateField('Purchase date')
 
     def __str__(self):
         # Nice method for obtaining the friendly value of a Field.choice
-        return self.name
+        return f"{self.name} was purchased on {self.date}"
 
     # Add this method
     def get_absolute_url(self):

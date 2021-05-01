@@ -22,8 +22,9 @@
             <div class="tab-pane fade" id="profile-{{budget.id}}" role="tabpanel" aria-labelledby="profile-tab">
                 <form action="{% url 'add_expense' budget.id %}" method="post">
                     {% csrf_token %}
-                    <input type="text" name="name" placeholder="name" required>
-                    <textarea type="text" name="description" placeholder="description" required></textarea>
+                    <input type="date" name="date" class="form-control" placeholder="Select Date"/>
+                    <input type="text" name="name" class="form-control" placeholder="name" required>
+                    <textarea type="text" name="description" class="form-control" placeholder="description" required></textarea>
                     $<input type="number" name="amount" placeholder="amount" required>
                     <input type="submit" class="btn btn-danger" value="Add Expense">
                 </form>
@@ -39,7 +40,7 @@
                     <tbody>
                       {% for expenditure in budget.expenditure_set.all %}
                         <tr>
-                            <td>Purchase Date</td>
+                            <td>{{expenditure.date}}</td>
                             <td>{{expenditure.name}}</td>
                             <td>${{expenditure.amount}}</td>
                             <td>{{ expenditure.description}}</td>
