@@ -78,9 +78,13 @@ class BudgetCreate(CreateView):
 
 # Update Budget
 class BudgetUpdate(UpdateView):
-    model = Budget
-    fields = ['initial_funds', 'trip_destination', 'trip_description']
+  model = Budget
+  fields = ['initial_funds', 'trip_destination', 'trip_description']
 
+# Delete Budget
+class BudgetDelete(DeleteView):
+  model = Budget
+  success_url = '/budgets/'
 
 
 # Add expenditure to Budget

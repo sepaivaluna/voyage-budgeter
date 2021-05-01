@@ -55,6 +55,8 @@
                 <h4>Description</h4>
                 <p>{{budget.trip_description}}</p>
                 <a href="{% url 'detail' budget.id %}" class="btn btn-primary">View More</a>
+                <a class="btn btn-warning" href="{% url 'update_budget' budget.id %}">Edit Details</a>
+                <a class="btn btn-danger" href="{% url 'delete_budget' budget.id %}">Delete</a>
             </div>
         </div>
     </div>

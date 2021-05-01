@@ -1,12 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Detail of budget</h1>
+<h1>Details</h1>
 
 <div class="row">
     <div class="card">
         <div class="card-content">
-          <span class="card-title">{{ budget.name }}</span>
-          <p>Funds Remaining: ${{ after_expenses_budget }}</p>
+        <div class="d-flex justify-content-between">
+            <h2 class="card-title m-1">{{ budget.name }}</h2>
+            <div class="d-flex m-1">
+                <h5 class="m-1"><a class="btn btn-warning" href="{% url 'update_budget' budget.id %}">Edit</a></h5>
+                <h5 class="m-1"><a class="btn btn-danger" href="{% url 'delete_budget' budget.id %}">Delete</a></h5>
+            </div>
+
+        </div>
+          <h3>Funds Remaining: <span class="h2">${{ after_expenses_budget }}</span></h3>
           <h3>Trip Info:</h3>
           <p>Destination: {{ budget.trip_destination }}</p>
           <p>Description: {{ budget.trip_description }}</p>

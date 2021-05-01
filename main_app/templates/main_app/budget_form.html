@@ -12,6 +12,13 @@
     <table>
       {{ form.as_table }}
     </table>
+    {% if object %}
+    <button type="submit" class="btn btn-success">Save</button>
+    <a href="{% url 'detail' budget.id %}">Cancel</a>
+    {% else %}
     <button type="submit" class="btn btn-success">Create</button>
+    <a href="{% url 'budgets_index' %}">Cancel</a>
+    {% endif %}
+
   </form>
 {% endblock %}
