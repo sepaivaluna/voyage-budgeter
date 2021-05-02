@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Budget, Expenditure, PurchasePhotos
 from .forms import ExpenditureForm
+from django.db.models import Q
 
 import uuid
 import boto3
@@ -130,7 +131,7 @@ def remove_expense(request, budget_id, expense_id):
   return redirect('detail', budget_id=budget_id)
 
 # Adding purchase photos
-def add_purchase_photo(request, budget_id):
+def add_trip_photo(request, budget_id):
     # photo-file will be the "name" attribute on the <input type="file">
     photo_file = request.FILES.get('photo-file', None)
     if photo_file:
@@ -152,3 +153,26 @@ def add_purchase_photo(request, budget_id):
         except:
             print('An error occurred uploading file to S3')
     return redirect('detail', budget_id=budget_id)
+
+def search_budgets(request):
+    if request.method == 'GET':
+        query= request.GET.get('q')
+
+        submitbutton= request.GET.get('submit')
+
+        if query is not None:
+            lookups= Q(name__icontains=query)
+            budgets = Budget.objects.filter(user=request.user)
+
+            results= budgets.filter(lookups).distinct()
+
+            context={'results': results,
+                     'submitbutton': submitbutton}
+
+            return render(request, 'pages/budget/index.html', context)
+
+        else:
+            return render(request, 'pages/budget/index.html')
+
+    else:
+        return render(request, 'pages/budget/index.html')

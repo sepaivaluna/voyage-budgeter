@@ -1,6 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<div class="container d-fles justify-content-center align-items-center">
+    <form action="{% url 'search_budgets' %}" method="GET" value="{{request.GET.q}}">
+        Search <input type="text" name="q" value="{{request.GET.q}}" placeholder="Search posts"/>
+        <input type="submit" name="submit" value="Search"/>
+        </form>
+        
+        
+        {% if submitbutton == 'Search' and request.GET.q != '' %}
+        {% if results %}
+        <h1>Results for <b>{{ request.GET.q }}</b></h1>
+        <br/><br/>
+        
+        {% for result in results %}
+        
+        {{result.name}}
+        <br/>
+        
+        {% endfor %}
+        {% else %}
+        <h1>No search results for this query</h1>
+        <a class="btn btn-secondary" href="{% url 'budgets_index' %}">Back to all budgets</a>
+        {% endif %}
+        {% endif %}
+</div>
+
 {% for budget in budgets %}
 <div class="card text-center">
     <div class="card-header"><h1>{{budget.name}}</h1>

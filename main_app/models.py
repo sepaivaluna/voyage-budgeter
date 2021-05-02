@@ -28,7 +28,7 @@ class Budget(models.Model):
 class Expenditure(models.Model):
     name = models.CharField(max_length=60)
     description = models.TextField(max_length=255)
-    amount = models.IntegerField()
+    amount = models.FloatField()
     budget = models.ForeignKey(Budget, on_delete=CASCADE)
     date = models.DateField('Purchase date')
 
@@ -45,7 +45,6 @@ class Expenditure(models.Model):
 
 class PurchasePhotos(models.Model):
     url = models.CharField(max_length=200)
-    description = models.TextField(max_length=255, null=True)
     budget = models.ForeignKey(Budget, on_delete=models.CASCADE)
 
     def __str__(self):

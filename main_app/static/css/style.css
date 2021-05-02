@@ -6,3 +6,9 @@
 .nav-logo {
     padding-left: 5px;
 }
+
+.carousel,
+.photos {
+    max-height: 500px;
+    max-width: 500px;
+}
