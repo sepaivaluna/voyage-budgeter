@@ -42,3 +42,11 @@ class Expenditure(models.Model):
 
     class Meta:
         ordering = ['-date']
+
+class PurchasePhotos(models.Model):
+    url = models.CharField(max_length=200)
+    description = models.TextField(max_length=255, null=True)
+    budget = models.ForeignKey(Budget, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Photo for budget_id: {self.budget_id} @{self.url}'

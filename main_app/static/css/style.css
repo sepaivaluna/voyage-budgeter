@@ -6,3 +6,8 @@
 .nav-logo {
     padding-left: 5px;
 }
+
+.carousel-item{
+    height: 32rem;
+    background: #777
+}

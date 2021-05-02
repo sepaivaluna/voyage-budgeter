@@ -1,13 +1,20 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Budget, Expenditure
+from .models import Budget, Expenditure, PurchasePhotos
 from .forms import ExpenditureForm
+
+import uuid
+import boto3
 
 # Using this to sort the dates
 from django.db.models import DateTimeField
 from django.db.models.functions import Trunc
+
+S3_BASE_URL = "https://s3-us-east-2.amazonaws.com/"
+BUCKET = "voyagebudgeter"
 
 # Home
 def home(request):
@@ -122,3 +129,26 @@ def remove_expense(request, budget_id, expense_id):
       expenditure.delete()
   return redirect('detail', budget_id=budget_id)
 
+# Adding purchase photos
+def add_purchase_photo(request, budget_id):
+    # photo-file will be the "name" attribute on the <input type="file">
+    photo_file = request.FILES.get('photo-file', None)
+    if photo_file:
+        s3 = boto3.client('s3')
+        # need a unique "key" for S3 / needs image file extension too
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        # just in case something goes wrong
+        try:
+            s3.upload_fileobj(photo_file, BUCKET, key)
+            # build the full url string
+            url = f"{S3_BASE_URL}{BUCKET}/{key}"
+
+            # budget = Budget.objects.get(id=budget_id)
+            # print(budget, "budget printing")
+            photo = PurchasePhotos(url=url, budget_id=budget_id)
+            print(photo, "photo printing")
+            print(photo.url)
+            photo.save()
+        except:
+            print('An error occurred uploading file to S3')
+    return redirect('detail', budget_id=budget_id)
