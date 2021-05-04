@@ -7,6 +7,7 @@ from .models import Budget, City, Expenditure, PurchasePhotos
 from .forms import ExpenditureForm, CityForm
 from django.db.models import Q
 import requests
+from decimal import Decimal
 
 
 import uuid
@@ -77,13 +78,13 @@ def budget_detail(request, budget_id):
       total_expenses += expenditure.amount
     # subtracting the expenses from my original budget
     after_expenses_budget = budget.initial_funds - total_expenses
-    budget.remaining_funds = after_expenses_budget
-    budget.total_spent = total_expenses
+    budget.remaining_funds = round(after_expenses_budget, 2)
+    budget.total_spent = round(total_expenses, 2)
     budget.save()
     context = {
         'budget': budget,
-        'total_expenses': total_expenses,
-        'after_expenses_budget': after_expenses_budget
+        'total_expenses': round(total_expenses, 2),
+        'after_expenses_budget': round(after_expenses_budget, 2)
     }
     return render(request, 'pages/budget/detail.html', context)
 
@@ -158,12 +159,12 @@ def add_trip_photo(request, budget_id):
 # Function used for querying through budgets
 def search_budgets(request):
     if request.method == 'GET':
-        query= request.GET.get('q')
+        query = request.GET.get('q')
 
-        submitbutton= request.GET.get('submit')
+        submitbutton = request.GET.get('submit')
 
         if query is not None:
-            lookups= Q(name__icontains=query)
+            lookups= Q(name__icontains=query) | Q(trip_destination__icontains=query) | Q(trip_description__icontains=query)
             budgets = Budget.objects.filter(user=request.user)
 
             results= budgets.filter(lookups).distinct()
@@ -179,57 +180,35 @@ def search_budgets(request):
     else:
         return render(request, 'pages/budget/index.html')
 
-# NOTE Getting the weather
-# def show_weather(request):
-#     city = 'Las Vegas'
-#     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'
-#     city_weather = requests.get(url.format(city, WEATHER_API_KEY)).json() #request the API data and convert the JSON to Python data types
-#     print(city_weather)
-#     form = CityForm()
+def search_expenses(request, budget_id):
 
-#     weather = {
-#       'city': city,
-#       'temperature': city_weather['main']['temp'],
-#       'description': city_weather['weather'][0]['description'],
-#       'icon': city_weather['weather'][0]['icon']
-#     }
+  if request.method == 'GET':
+    query= request.GET.get('q')
 
-#     context = {
-#       'weather': weather,
-#       'city_form': form
-#     }
-#     return render(request, 'pages/weather_index.html', context) 
-# def show_weather(request):
-#   cities = City.objects.all()
+    submitbutton = request.GET.get('submit')
 
-#   if request.method == "POST":
-#     form = CityForm(request.POST)
+    if query is not None:
+      lookups = Q(name__icontains=query) | Q(description__icontains=query) | Q(amount__icontains=query)
+      budget = Budget.objects.get(id=budget_id)
 
-#     if form.is_valid():
-#       new_city = form.save(commit=False)
-#       new_city.save()
-#     return redirect('show_weather')
+      expenditures = Expenditure.objects.filter(budget = budget)
 
-#   for city in cities:
-#     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'
-#     city_weather = requests.get(url.format(city.name, WEATHER_API_KEY)).json() #request the API data and convert the JSON to Python data types
+      results = expenditures.filter(lookups).distinct()
+
+      context = {
+        'results': results,
+        'submitbutton': submitbutton,
+        'budget': budget
+      }
+      return render(request, 'pages/budget/filtered_expenses.html', context)
     
-#     print(city_weather)
-#     weather = {
-#       'city': city,
-#       'temperature': city_weather['main']['temp'],
-#       'description': city_weather['weather'][0]['description'],
-#       'icon': city_weather['weather'][0]['icon']
-#     }
-      
-#     form = CityForm()
+    else:
+      return render(request, 'pages/budget/filtered_expenses.html')
 
-#     context = {
-#       'weather': weather,
-#       'city_form': form
-#     }
-#     return render(request, 'pages/weather_index.html', context) 
+  else:
+    return render(request, 'pages/budget/filtered_expenses.html')
 
+# NOTE Getting the weather
 def show_weather(request):
     cities = City.objects.all()
     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'

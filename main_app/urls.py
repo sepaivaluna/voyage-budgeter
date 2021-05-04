@@ -21,8 +21,9 @@ urlpatterns = [
     # user urls
     path('accounts/signup/', views.signup, name='signup'),
 
-    # search budgets
+    # search urls
     path(r'^$', views.search_budgets, name='search_budgets'),
+    path('expenses/<int:budget_id>/', views.search_expenses, name='search_expenses'),
 
     # testing weather path
     path('weather/', views.show_weather, name='show_weather'),

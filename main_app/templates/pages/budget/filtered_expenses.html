@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form action="{% url 'search_expenses' budget.id %}" method="GET" value="{{request.GET.q}}">
+    Search <input type="text" name="q" value="{{request.GET.q}}" placeholder="Search expenses"/>
+    <input type="submit" name="submit" value="Search"/>
+</form>
+
+    {% if submitbutton == 'Search' and request.GET.q != '' %}
+    {% if results %}
+    <h1>Results for <b>{{ request.GET.q }}</b></h1>
+    <br/><br/>
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="datefield">Date</th>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expenditure in results %}
+                <tr>
+                    <td>{{expenditure.date}}</td>
+                    <td>{{expenditure.name}}</td>
+                    <td>${{expenditure.amount}}</td>
+                    <td>{{ expenditure.description}}</td>
+                    <td><a href="{% url 'remove_expense' budget.id expenditure.id %}" class="btn btn-danger">Delete</a></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+    </div>
+    {% else %}
+    No search results for this query
+    {% endif %}
+    {% endif %}
+
+    <a href="{% url 'detail' budget.id %}" class="btn btn-secondary">Back to budget</a>
+
+    {% endblock %}
