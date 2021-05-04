@@ -3,19 +3,20 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Budget, Expenditure, PurchasePhotos
-from .forms import ExpenditureForm
+from .models import Budget, City, Expenditure, PurchasePhotos
+from .forms import ExpenditureForm, CityForm
 from django.db.models import Q
+import requests
+
 
 import uuid
 import boto3
 
-# Using this to sort the dates
-from django.db.models import DateTimeField
-from django.db.models.functions import Trunc
+from decouple import config
 
-S3_BASE_URL = "https://s3-us-east-2.amazonaws.com/"
-BUCKET = "voyagebudgeter"
+S3_BASE_URL = config('S3_BASE_URL')
+BUCKET = config('BUCKET')
+WEATHER_API_KEY = config('WEATHER_API_KEY')
 
 # Home
 def home(request):
@@ -154,6 +155,7 @@ def add_trip_photo(request, budget_id):
             print('An error occurred uploading file to S3')
     return redirect('detail', budget_id=budget_id)
 
+# Function used for querying through budgets
 def search_budgets(request):
     if request.method == 'GET':
         query= request.GET.get('q')
@@ -176,3 +178,83 @@ def search_budgets(request):
 
     else:
         return render(request, 'pages/budget/index.html')
+
+# NOTE Getting the weather
+# def show_weather(request):
+#     city = 'Las Vegas'
+#     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'
+#     city_weather = requests.get(url.format(city, WEATHER_API_KEY)).json() #request the API data and convert the JSON to Python data types
+#     print(city_weather)
+#     form = CityForm()
+
+#     weather = {
+#       'city': city,
+#       'temperature': city_weather['main']['temp'],
+#       'description': city_weather['weather'][0]['description'],
+#       'icon': city_weather['weather'][0]['icon']
+#     }
+
+#     context = {
+#       'weather': weather,
+#       'city_form': form
+#     }
+#     return render(request, 'pages/weather_index.html', context) 
+# def show_weather(request):
+#   cities = City.objects.all()
+
+#   if request.method == "POST":
+#     form = CityForm(request.POST)
+
+#     if form.is_valid():
+#       new_city = form.save(commit=False)
+#       new_city.save()
+#     return redirect('show_weather')
+
+#   for city in cities:
+#     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'
+#     city_weather = requests.get(url.format(city.name, WEATHER_API_KEY)).json() #request the API data and convert the JSON to Python data types
+    
+#     print(city_weather)
+#     weather = {
+#       'city': city,
+#       'temperature': city_weather['main']['temp'],
+#       'description': city_weather['weather'][0]['description'],
+#       'icon': city_weather['weather'][0]['icon']
+#     }
+      
+#     form = CityForm()
+
+#     context = {
+#       'weather': weather,
+#       'city_form': form
+#     }
+#     return render(request, 'pages/weather_index.html', context) 
+
+def show_weather(request):
+    cities = City.objects.all()
+    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'
+
+
+    if request.method == 'POST':
+      form = CityForm(request.POST)
+      form.save()
+
+    form = CityForm()
+    weather_data = []
+    
+    for city in cities:
+      city_weather = requests.get(url.format(city.name, WEATHER_API_KEY)).json() #request the API data and convert the JSON to Python data types
+      print(city_weather)
+      weather = {
+        'city': city.name,
+        'temperature': city_weather['main']['temp'],
+        'description': city_weather['weather'][0]['description'],
+        'icon': city_weather['weather'][0]['icon']
+      }
+      weather_data.append(weather)
+    
+    context = {
+      'weather_data': weather_data,
+      'form': form
+    }
+    return render(request, 'pages/weather_index.html', context) 

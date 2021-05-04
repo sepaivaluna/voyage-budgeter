@@ -23,4 +23,8 @@ urlpatterns = [
 
     # search budgets
     path(r'^$', views.search_budgets, name='search_budgets'),
+
+    # testing weather path
+    path('weather/', views.show_weather, name='show_weather'),
+    # path('weather/add', views.add_weather, name="add_weather")
 ]
