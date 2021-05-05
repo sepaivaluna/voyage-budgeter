@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-
 <div class="container d-fles justify-content-center align-items-center">
+    {% if budgets.count > 0 %}
     <form action="{% url 'search_budgets' %}" method="GET" value="{{request.GET.q}}" >
         Search <input type="text" name="q" value="{{request.GET.q}}" placeholder="Search posts"/>
         <input type="submit" name="submit" value="Search"/>
     </form>
+    <br><br>
+    {% endif %}
         
         
         {% if submitbutton == 'Search' and request.GET.q != '' %}
