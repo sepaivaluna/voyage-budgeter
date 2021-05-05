@@ -46,7 +46,7 @@ def signup(request):
 def budgets_index(request):
   budgets = Budget.objects.filter(user=request.user)
   expenditure_form = ExpenditureForm()
-  
+
   for budget in budgets:
     if budget.remaining_funds < (budget.initial_funds * .25):
       budget.color = '#cc3300'
@@ -59,11 +59,21 @@ def budgets_index(request):
     elif budget.remaining_funds >= (budget.initial_funds * .90):
       budget.color = '#339900'
 
-    print(budget.color)
+    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'
+    city_weather = requests.get(url.format(budget.city, WEATHER_API_KEY)).json() #request the API data and convert the JSON to Python data types
+
+    weather = {
+      'temperature': city_weather['main']['temp'],
+      'description': city_weather['weather'][0]['description'],
+      'icon': city_weather['weather'][0]['icon']
+    }
+
     budget.save()
+
   context = {
     'budgets': budgets,
-    'expenditure_form': expenditure_form 
+    'expenditure_form': expenditure_form,
+    'weather': weather
   }
   return render(request, 'pages/budget/index.html', context)
 
@@ -81,10 +91,20 @@ def budget_detail(request, budget_id):
     budget.remaining_funds = round(after_expenses_budget, 2)
     budget.total_spent = round(total_expenses, 2)
     budget.save()
+
+    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'
+    city_weather = requests.get(url.format(budget.city, WEATHER_API_KEY)).json() #request the API data and convert the JSON to Python data types
+
+    weather = {
+      'temperature': city_weather['main']['temp'],
+      'description': city_weather['weather'][0]['description'],
+      'icon': city_weather['weather'][0]['icon']
+    }
     context = {
         'budget': budget,
         'total_expenses': round(total_expenses, 2),
-        'after_expenses_budget': round(after_expenses_budget, 2)
+        'after_expenses_budget': round(after_expenses_budget, 2),
+        'weather': weather
     }
     return render(request, 'pages/budget/detail.html', context)
 
@@ -92,7 +112,7 @@ def budget_detail(request, budget_id):
 # Create new Budget
 class BudgetCreate(CreateView):
   model = Budget
-  fields = ['name', 'initial_funds', 'trip_destination', 'trip_description']
+  fields = ['name', 'initial_funds', 'trip_destination', 'trip_description', 'city']
 
   def form_valid(self, form):
     form.instance.user = self.request.user
@@ -103,7 +123,7 @@ class BudgetCreate(CreateView):
 # Update Budget
 class BudgetUpdate(UpdateView):
   model = Budget
-  fields = ['initial_funds', 'trip_destination', 'trip_description']
+  fields = ['initial_funds', 'trip_destination', 'trip_description', 'city']
 
 # Delete Budget
 class BudgetDelete(DeleteView):
@@ -209,6 +229,7 @@ def search_expenses(request, budget_id):
     return render(request, 'pages/budget/filtered_expenses.html')
 
 # NOTE Getting the weather
+
 def show_weather(request):
     cities = City.objects.all()
     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'

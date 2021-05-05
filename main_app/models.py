@@ -24,7 +24,7 @@ class Budget(models.Model):
     remaining_funds = models.IntegerField(null=True)
     total_spent = models.IntegerField(null=True)
     color = models.CharField(max_length=100, null=True)
-    city = models.ManyToManyField(City)
+    city = models.CharField(max_length=25, null=True)
 
     def __str__(self):
         return self.name

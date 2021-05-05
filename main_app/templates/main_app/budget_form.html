@@ -9,9 +9,11 @@
 
   <form action="" method="post">
     {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-    </table>
+    <input type="text" name="name" placeholder="name">
+    <input type="number" name="initial_funds" placeholder="Initial Funds">
+    <input type="text" name="trip_destination" placeholder="Country">
+    <textarea type="text" name="trip_description" placeholder="Description"></textarea>
+    <input type="text" name="city" placeholder="City">
     {% if object %}
     <button type="submit" class="btn btn-success">Save</button>
     <a href="{% url 'detail' budget.id %}">Cancel</a>
