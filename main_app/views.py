@@ -7,8 +7,6 @@ from .models import Budget, City, Expenditure, PurchasePhotos
 from .forms import ExpenditureForm, CityForm
 from django.db.models import Q
 import requests
-from decimal import Decimal
-
 
 import uuid
 import boto3
@@ -22,8 +20,6 @@ WEATHER_API_KEY = config('WEATHER_API_KEY')
 # Home
 def home(request):
     return render(request, 'pages/home.html')
-
-
 
 # Sign Up form
 def signup(request):
@@ -39,8 +35,6 @@ def signup(request):
   form = UserCreationForm()
   context = {'form': form, 'error_message': error_message}
   return render(request, 'registration/signup.html', context)
-
-
 
 # Show all budgets
 def budgets_index(request):
@@ -59,21 +53,11 @@ def budgets_index(request):
     elif budget.remaining_funds >= (budget.initial_funds * .90):
       budget.color = '#339900'
 
-    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'
-    city_weather = requests.get(url.format(budget.city, WEATHER_API_KEY)).json() #request the API data and convert the JSON to Python data types
-
-    weather = {
-      'temperature': city_weather['main']['temp'],
-      'description': city_weather['weather'][0]['description'],
-      'icon': city_weather['weather'][0]['icon']
-    }
-
     budget.save()
 
   context = {
     'budgets': budgets,
     'expenditure_form': expenditure_form,
-    'weather': weather
   }
   return render(request, 'pages/budget/index.html', context)
 
@@ -141,7 +125,7 @@ def add_expense(request, budget_id):
   return redirect('detail', budget_id=budget_id)
 
 # Edit expenditure from Budget
-
+## NOTE TBD
 
 # Delete expenditure from Budget
 def remove_expense(request, budget_id, expense_id):
@@ -190,7 +174,8 @@ def search_budgets(request):
             results= budgets.filter(lookups).distinct()
 
             context={'results': results,
-                     'submitbutton': submitbutton}
+                     'submitbutton': submitbutton,
+                    }
 
             return render(request, 'pages/budget/index.html', context)
 
