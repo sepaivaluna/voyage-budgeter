@@ -103,6 +103,31 @@
 </div>
 
 </br>
+<div class="container" style="height: 400px; width: 400px;">
+    <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{{ first_photo }}" > 
+            </div>
+            {% for photo in photos %}
+        <div class="carousel-item">
+            <img src="{{ photo }}" >
+        </div>
+        {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+<div>
+    <h1 class="text-center">Some pictures you might like from {{ budget.trip_destination }} above</h1>
+</div>
 
 <script>    
     $( ".datefield" ).click(function() {

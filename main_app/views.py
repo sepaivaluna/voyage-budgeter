@@ -16,6 +16,8 @@ from decouple import config
 S3_BASE_URL = config('S3_BASE_URL')
 BUCKET = config('BUCKET')
 WEATHER_API_KEY = config('WEATHER_API_KEY')
+FLICKR_PUBLIC_KEY = config('FLICKR_PUBLIC_KEY')
+FLICKR_SECRET = config('FLICKR_SECRET')
 
 # Home
 def home(request):
@@ -63,6 +65,9 @@ def budgets_index(request):
 
 # Show budget details
 def budget_detail(request, budget_id):
+
+    photos = []
+
     budget = Budget.objects.get(id=budget_id)
     # below is how we only get the expenses that belong to this budget
     expenditures = Expenditure.objects.filter(budget = budget)
@@ -79,6 +84,17 @@ def budget_detail(request, budget_id):
     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'
     city_weather = requests.get(url.format(budget.city, WEATHER_API_KEY)).json() #request the API data and convert the JSON to Python data types
 
+    flickr_url = 'https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key={}&tags={}&format=json&nojsoncallback=1'
+    photos_list = requests.get(flickr_url.format(FLICKR_PUBLIC_KEY, budget.trip_destination)).json()
+
+    pre_url_photos = photos_list['photos']['photo']
+
+    for photo in pre_url_photos:
+      new_photo_url = f'http://farm{photo["farm"]}.staticflickr.com/{photo["server"]}/{photo["id"]}_{photo["secret"]}.jpg'
+      photos.append(new_photo_url)
+
+    first_photo = photos[0]
+    
     weather = {
       'temperature': city_weather['main']['temp'],
       'description': city_weather['weather'][0]['description'],
@@ -88,7 +104,9 @@ def budget_detail(request, budget_id):
         'budget': budget,
         'total_expenses': round(total_expenses, 2),
         'after_expenses_budget': round(after_expenses_budget, 2),
-        'weather': weather
+        'weather': weather,
+        'photos': photos,
+        'first_photo': first_photo
     }
     return render(request, 'pages/budget/detail.html', context)
 
@@ -212,34 +230,3 @@ def search_expenses(request, budget_id):
 
   else:
     return render(request, 'pages/budget/filtered_expenses.html')
-
-# NOTE Getting the weather
-
-def show_weather(request):
-    cities = City.objects.all()
-    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'
-
-
-    if request.method == 'POST':
-      form = CityForm(request.POST)
-      form.save()
-
-    form = CityForm()
-    weather_data = []
-    
-    for city in cities:
-      city_weather = requests.get(url.format(city.name, WEATHER_API_KEY)).json() #request the API data and convert the JSON to Python data types
-      print(city_weather)
-      weather = {
-        'city': city.name,
-        'temperature': city_weather['main']['temp'],
-        'description': city_weather['weather'][0]['description'],
-        'icon': city_weather['weather'][0]['icon']
-      }
-      weather_data.append(weather)
-    
-    context = {
-      'weather_data': weather_data,
-      'form': form
-    }
-    return render(request, 'pages/weather_index.html', context) 
