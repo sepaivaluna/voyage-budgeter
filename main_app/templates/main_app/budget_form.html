@@ -2,18 +2,62 @@
 
 {% block content %}
 {% if object %}
-<h1>Edit <span class="teal-text">{{object.name}}</span></h1>
+<h1>Edit {{object.name}}</h1>
+<br>
 {% else %}
-<h1>Add Budget</h1>
+<h1 class="display-3">Add Budget</h1>
+<br>
 {% endif %}
 
+<form class="row g-3" method="post">
+  {% csrf_token %}
+  <div class="col-md-6">
+    <label for="inputEmail4" class="form-label">Name</label>
+    <input type="text" name="name" class="form-control" id="inputEmail4" placeholder="Coolest Budget">
+  </div>
+  <div class="col-md-6">
+    <label for="inputPassword4" class="form-label">Initial Funds</label>
+    <input type="number" name="initial_funds" class="form-control" id="inputPassword4" min="0" placeholder="1000" oninput="validity.valid||(value='');">
+  </div>
+  <div class="col-md-6">
+    <label for="inputAddress" class="form-label">Country</label>
+    <input type="text" name="trip_destination" class="form-control" id="inputAddress" placeholder="Cuba">
+  </div>
+  <div class="col-md-6">
+    <label for="inputAddress2" class="form-label">City</label>
+    <input type="text" name="city" class="form-control" id="inputAddress2" placeholder="Havana">
+  </div>
+  <div class="col-md-4">
+    <label for="inputTheme" class="form-label">Theme</label>
+    <select id="inputTheme" name="theme" class="form-select">
+      <option selected>Choose...</option>
+      <option value="Kitten">Kittens</option>
+      <option value="Puppies">Puppies</option>
+    </select>
+  </div>
+  <div class="col-md-8">
+    <label for="inputZip" class="form-label">Description</label>
+    <textarea type="text" name="trip_description" class="form-control" id="inputZip" placeholder="Going to celebrate my graduation from G.A!"></textarea>
+  </div>
+  <div class="col-12 text-center">
+    {% if object %}
+      <button type="submit" class="btn btn-success">Save</button>
+      <a class="btn btn-secondary" href="{% url 'detail' budget.id %}">Cancel</a>
+    {% else %}
+      <button type="submit" class="btn btn-success">Create</button>
+      <a class="btn btn-secondary" href="{% url 'budgets_index' %}">Cancel</a>
+    {% endif %}
+  </div>
+</form>
+<!-- 
   <form action="" method="post">
     {% csrf_token %}
     <input type="text" name="name" placeholder="name">
     <input type="number" name="initial_funds" placeholder="Initial Funds">
     <input type="text" name="trip_destination" placeholder="Country">
-    <textarea type="text" name="trip_description" placeholder="Description"></textarea>
     <input type="text" name="city" placeholder="City">
+
+    <textarea type="text" name="trip_description" placeholder="Description"></textarea>
     <select name="theme" class="form-select" id="inputGroupSelect01">
       <option selected>Which do you prefer?</option>
       <option value="Kitten">Kittens</option>
@@ -30,5 +74,5 @@
     <a class="btn btn-secondary" href="{% url 'budgets_index' %}">Cancel</a>
     {% endif %}
 
-  </form>
+  </form> -->
 {% endblock %}

@@ -35,7 +35,7 @@
                 <input type="date" name="date" class="form-control" placeholder="Select Date"/>
                 <input type="text" name="name" class="form-control" placeholder="name" required>
                 <textarea type="text" name="description" class="form-control" placeholder="description" required></textarea>
-                $<input type="number" step="any" name="amount" placeholder="amount" min="0" required>
+                $<input type="number" step="any" name="amount" placeholder="amount" min="0" oninput="validity.valid||(value='');" required>
                 <input type="submit" class="btn btn-danger" value="Add Expense">
             </form>
 

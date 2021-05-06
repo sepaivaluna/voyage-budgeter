@@ -20,3 +20,7 @@
 .fa-minus-square {
     color: red;
 }
+
+.btn {
+    width: 120px !important;
+}
