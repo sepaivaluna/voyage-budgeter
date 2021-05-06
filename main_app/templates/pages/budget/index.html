@@ -18,13 +18,13 @@
         {% for budget in results %}
         
         <div class="card text-center">
-            <div class="card-header"><h1>{{budget.name}}</h1>
+            <div class="card-header"><a style="text-decoration: none;" href="{% url 'detail' budget.id %}"><h1>{{budget.name}}</h1></a>
                 <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="funds-tab" data-bs-toggle="tab" data-bs-target="#funds-{{budget.id}}" type="button" role="tab" aria-controls="funds-{{budget.id}}" aria-selected="true">Funds</button>
+                    <button class="nav-link active" id="funds-tab" data-bs-toggle="tab" data-bs-target="#funds-{{budget.id}}" type="button" role="tab" aria-controls="funds-{{budget.id}}" aria-selected="true">Funds <i class="fas fa-money-bill-wave"></i></button>
                     </li>
                     <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="expense-tab" data-bs-toggle="tab" data-bs-target="#expense-{{budget.id}}" type="button" role="tab" aria-controls="expense-{{budget.id}}" aria-selected="false">Expenses</button>
+                    <button class="nav-link" id="expense-tab" data-bs-toggle="tab" data-bs-target="#expense-{{budget.id}}" type="button" role="tab" aria-controls="expense-{{budget.id}}" aria-selected="false">Expenses <i class="far fa-minus-square"></i></button>
                     </li>
                     <li class="nav-item" role="presentation">
                     <button class="nav-link" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-{{budget.id}}" type="button" role="tab" aria-controls="info-{{budget.id}}" aria-selected="false">Info</button>
@@ -59,10 +59,11 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th id="date">Date</th>
-                                            <th id="name">Name</th>
-                                            <th id="amount">Amount</th>
-                                            <th id="description" colspan="2">Description</th>
+                                            <th id="date">Date ▶</th>
+                                            <th id="name">Name ▶</th>
+                                            <th id="amount">Amount ▶</th>
+                                            <th id="description">Description ▶</th>
+                                            <th><i class="fas fa-trash-alt"></i></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -118,13 +119,13 @@
 
 {% for budget in budgets %}
 <div class="card text-center">
-    <div class="card-header"><h1>{{budget.name}}</h1>
+    <div class="card-header"><a style="text-decoration: none;" href="{% url 'detail' budget.id %}"><h1>{{budget.name}}</h1></a>
         <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="funds-tab" data-bs-toggle="tab" data-bs-target="#funds-{{budget.id}}" type="button" role="tab" aria-controls="funds-{{budget.id}}" aria-selected="true">Funds</button>
+            <button class="nav-link active" id="funds-tab" data-bs-toggle="tab" data-bs-target="#funds-{{budget.id}}" type="button" role="tab" aria-controls="funds-{{budget.id}}" aria-selected="true">Funds <i class="fas fa-money-bill-wave"></i></button>
             </li>
             <li class="nav-item" role="presentation">
-            <button class="nav-link" id="expense-tab" data-bs-toggle="tab" data-bs-target="#expense-{{budget.id}}" type="button" role="tab" aria-controls="expense-{{budget.id}}" aria-selected="false">Expenses</button>
+            <button class="nav-link" id="expense-tab" data-bs-toggle="tab" data-bs-target="#expense-{{budget.id}}" type="button" role="tab" aria-controls="expense-{{budget.id}}" aria-selected="false">Expenses <i class="far fa-minus-square"></i></button>
             </li>
             <li class="nav-item" role="presentation">
             <button class="nav-link" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-{{budget.id}}" type="button" role="tab" aria-controls="info-{{budget.id}}" aria-selected="false">Info</button>
@@ -159,10 +160,11 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th id="date">Date</th>
-                                    <th id="name">Name</th>
-                                    <th id="amount">Amount</th>
-                                    <th id="description" colspan="2">Description</th>
+                                    <th id="date">Date ▶</th>
+                                    <th id="name">Name ▶</th>
+                                    <th id="amount">Amount ▶</th>
+                                    <th id="description">Description ▶</th>
+                                    <th><i class="fas fa-trash-alt"></i></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -209,12 +211,20 @@
 {% endfor %}
 <script>
 
-    $('th').click(function(){
-    var table = $(this).parents('table').eq(0)
-    var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
-    this.asc = !this.asc
-    if (!this.asc){rows = rows.reverse()}
-    for (var i = 0; i < rows.length; i++){table.append(rows[i])}
+    $('th').click(function() {
+        var table = $(this).parents('table').eq(0)
+        var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+        this.asc = !this.asc
+        if (!this.asc){
+            $(this).text($(this).text().slice(0,-1) + " ▲")
+            rows = rows.reverse()
+        } else {
+            $(this).text($(this).text().slice(0,-1) + " ▼")
+
+        }
+        for (var i = 0; i < rows.length; i++) {
+            table.append(rows[i])
+        }
     })
     function comparer(index) {
         return function(a, b) {
@@ -222,6 +232,8 @@
             return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
         }
     }
-    function getCellValue(row, index){ return $(row).children('td').eq(index).text() }
+    function getCellValue(row, index){ 
+        return $(row).children('td').eq(index).text() 
+        }
 </script>
 {% endblock %}  

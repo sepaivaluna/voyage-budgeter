@@ -12,3 +12,11 @@
     max-height: 500px;
     max-width: 500px;
 }
+
+.fa-money-bill-wave {
+    color: green;
+}
+
+.fa-minus-square {
+    color: red;
+}

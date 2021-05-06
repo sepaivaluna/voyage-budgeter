@@ -26,6 +26,7 @@ class Budget(models.Model):
     color = models.CharField(max_length=100, null=True)
     city = models.CharField(max_length=25, null=True)
     theme = models.CharField(max_length=7, choices=RELAX_THEMES, default=RELAX_THEMES[0][0], null=True)
+    # percentage_difference = models.CharField(max_length=10, null=True)
 
     def __str__(self):
         return self.name

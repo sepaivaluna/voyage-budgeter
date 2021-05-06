@@ -59,8 +59,9 @@ def budgets_index(request):
     elif budget.remaining_funds >= (budget.initial_funds * .90):
       budget.color = '#339900'
 
+    percentage_difference = budget.remaining_funds/budget.initial_funds
+    print(percentage_difference)
     budget.save()
-
   context = {
     'budgets': budgets,
     'expenditure_form': expenditure_form,
@@ -150,21 +151,41 @@ def add_expense(request, budget_id):
     new_expense = form.save(commit=False)
     new_expense.budget_id = budget_id
 
+
     if new_expense.amount > budget.remaining_funds:
       context = {
         'message': f"You have insufficient funds. You have {budget.remaining_funds} and you're trying to spend {new_expense.amount}.",
         'budget': budget,
       }
-      return render(request, 'funds_check/insufficient_funds.html', context)
+      return render(request, 'funds_check/add_expense.html', context)
+
+    elif new_expense.amount == 0 or new_expense.amount < 0:
+      context = {
+        'message': 'You have to have a number greater than 0 to add it to your budget.',
+        'budget': budget,
+      }
+      return render(request, 'funds_check/add_expense.html', context)
+
     elif new_expense.amount == budget.remaining_funds:
       new_expense.save()
+      budget.remaining_funds -= round(new_expense.amount, 2)
+      budget.total_spent += round(new_expense.amount, 2)
+      budget.save()
       context = {
         'message': f"You have spent all of your funds! You can no longer add anymore purchases after this one.",
         'budget': budget,
       }
-      return render(request, 'funds_check/insufficient_funds.html', context)
+      return render(request, 'funds_check/add_expense.html', context)
+    
+    context = {
+      'message': 'You succesfully added this expense to your budget',
+      'budget': budget,
+    }
+    budget.remaining_funds -= round(new_expense.amount, 2)
+    budget.total_spent += round(new_expense.amount, 2)
+    budget.save()
     new_expense.save()
-  return redirect('detail', budget_id=budget_id)
+  return render(request, 'funds_check/add_expense.html', context)
 
 # Edit expenditure from Budget
 ## NOTE TBD

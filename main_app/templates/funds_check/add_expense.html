@@ -1,8 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>{{message}}</h1>
 
-{% if message == "You have spent all of your funds! You can no longer add anymore purchases after this one." %}
+<h1 id="message">{{message}}</h1>
+{% if message == "You succesfully added this expense to your budget" %}
+<div class="container">
+    <h3>You have {{ budget.remaining_funds }} remaining</h3>
+    <h3>You have spent a total of: {{ budget.total_spent }}</h3>
+    <br>
+    <a class="btn btn-secondary" href="{% url 'detail' budget.id %}">Back to Budget</a>
+    <a class="btn btn-primary" href="{% url 'budgets_index' %}">View All Budgets</a>
+</div>
+<script>
+    if ($('#message').text() === 'You succesfully added this expense to your budget') {
+        swal('You discovered a new way of doing things');
+    }
+</script>
+
+{% elif message == "You have spent all of your funds! You can no longer add anymore purchases after this one." %}
 <div class="container">
     <a class="btn btn-secondary" href="{% url 'detail' budget.id %}">Back to Budget</a>
     <a class="btn btn-primary" href="{% url 'budgets_index' %}">View All Budgets</a>
