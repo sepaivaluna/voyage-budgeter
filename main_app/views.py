@@ -90,7 +90,7 @@ def budget_detail(request, budget_id):
     city_weather = requests.get(url.format(budget.city, WEATHER_API_KEY)).json() #request the API data and convert the JSON to Python data types
 
     flickr_url = 'https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key={}&tags={}&format=json&nojsoncallback=1'
-    photos_list = requests.get(flickr_url.format(FLICKR_PUBLIC_KEY, budget.trip_destination)).json()
+    photos_list = requests.get(flickr_url.format(FLICKR_PUBLIC_KEY, budget.theme)).json()
 
     pre_url_photos = photos_list['photos']['photo']
 
@@ -122,7 +122,7 @@ def budget_detail(request, budget_id):
 # Create new Budget
 class BudgetCreate(LoginRequiredMixin, CreateView):
   model = Budget
-  fields = ['name', 'initial_funds', 'trip_destination', 'trip_description', 'city']
+  fields = ['name', 'initial_funds', 'trip_destination', 'trip_description', 'city', 'theme']
 
   def form_valid(self, form):
     form.instance.user = self.request.user
@@ -144,10 +144,18 @@ class BudgetDelete(LoginRequiredMixin, DeleteView):
 @login_required
 def add_expense(request, budget_id):
   form = ExpenditureForm(request.POST)
+  budget = Budget.objects.get(id=budget_id)
 
   if form.is_valid():
     new_expense = form.save(commit=False)
     new_expense.budget_id = budget_id
+
+    if new_expense.amount > budget.remaining_funds:
+      context = {
+        'message': f"You have insufficient funds. You have {budget.remaining_funds} and you're trying to spend {new_expense.amount}",
+        'budget': budget,
+      }
+      return render(request, 'funds_check/insufficient_funds.html', context)
     new_expense.save()
   return redirect('detail', budget_id=budget_id)
 

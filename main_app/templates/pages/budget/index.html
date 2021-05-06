@@ -21,17 +21,17 @@
             <div class="card-header"><h1>{{budget.name}}</h1>
                 <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-{{budget.id}}" type="button" role="tab" aria-controls="home-{{budget.id}}" aria-selected="true">Funds</button>
+                    <button class="nav-link active" id="funds-tab" data-bs-toggle="tab" data-bs-target="#funds-{{budget.id}}" type="button" role="tab" aria-controls="funds-{{budget.id}}" aria-selected="true">Funds</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-{{budget.id}}" type="button" role="tab" aria-controls="profile-{{budget.id}}" aria-selected="false">Expenses</button>
+                    <button class="nav-link" id="expense-tab" data-bs-toggle="tab" data-bs-target="#expense-{{budget.id}}" type="button" role="tab" aria-controls="expense-{{budget.id}}" aria-selected="false">Expenses</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-{{budget.id}}" type="button" role="tab" aria-controls="contact-{{budget.id}}" aria-selected="false">Info</button>
+                    <button class="nav-link" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-{{budget.id}}" type="button" role="tab" aria-controls="info-{{budget.id}}" aria-selected="false">Info</button>
                     </li>
                 </ul>
                 <div class="tab-content card-body" id="myTabContent">
-                    <div class="tab-pane fade show active" id="home-{{budget.id}}" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="tab-pane fade show active" id="funds-{{budget.id}}" role="tabpanel" aria-labelledby="funds-tab">
                         
                         {% if budget.remaining_funds == None %}
                         <p class="h3" style="color: {{budget.color}}">Funds Remaining: ${{ budget.initial_funds }}</p>
@@ -45,42 +45,55 @@
                         <p class=""><span class="h5" style="color: {{budget.color}}">Danger!</span> You have spent more than 75% of your budget</p>
                         {% endif %}
                     </div>
-                    <div class="tab-pane fade" id="profile-{{budget.id}}" role="tabpanel" aria-labelledby="profile-tab">
-                        {% if budget.total_spent > 0 %}
-                        <form action="{% url 'add_expense' budget.id %}" method="post">
-                            {% csrf_token %}
-                            <input type="date" name="date" class="form-control" placeholder="Select Date" required/>
-                            <input type="text" name="name" class="form-control" placeholder="name" required>
-                            <textarea type="text" name="description" class="form-control" placeholder="description" required></textarea>
-                            $<input type="number" name="amount" placeholder="amount" required>
-                            <input type="submit" class="btn btn-danger" value="Add Expense">
-                        </form>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th id="date">Date</th>
-                                    <th id="name">Name</th>
-                                    <th id="amount">Amount</th>
-                                    <th id="description" colspan="2">Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                              {% for expenditure in budget.expenditure_set.all %}
-                                <tr>
-                                    <td>{{expenditure.date}}</td>
-                                    <td>{{expenditure.name}}</td>
-                                    <td>${{expenditure.amount}}</td>
-                                    <td>{{ expenditure.description}}</td>
-                                    <td><a href="{% url 'remove_expense' budget.id expenditure.id %}" class="btn btn-danger">Delete</a></td>
-                                </tr>
-                              {% endfor %}
-                            </tbody>
-                            {% else %}
-                                <h3>You haven't made any purchases yet.</h3>
-                            {% endif %}
-                          </table>
+                    <div class="tab-pane fade" id="expense-{{budget.id}}" role="tabpanel" aria-labelledby="expense-tab">
+                        <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link active" id="all-expenses-tab" data-bs-toggle="pill" data-bs-target="#all-expenses-{{budget.id}}" type="button" role="tab" aria-controls="all-expenses-{{budget.id}}" aria-selected="true">All Expenses</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link" id="add-expenses-tab" data-bs-toggle="pill" data-bs-target="#add-expenses-{{budget.id}}" type="button" role="tab" aria-controls="add-expenses-{{budget.id}}" aria-selected="false">Add Expense</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="tabContent">
+                            <div class="tab-pane fade show active" id="all-expenses-{{budget.id}}" role="tabpanel" aria-labelledby="all-expenses-tab">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th id="date">Date</th>
+                                            <th id="name">Name</th>
+                                            <th id="amount">Amount</th>
+                                            <th id="description" colspan="2">Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                      {% for expenditure in budget.expenditure_set.all %}
+                                        <tr>
+                                            <td>{{expenditure.date}}</td>
+                                            <td>{{expenditure.name}}</td>
+                                            <td>${{expenditure.amount}}</td>
+                                            <td>{{ expenditure.description}}</td>
+                                            <td><a href="{% url 'remove_expense' budget.id expenditure.id %}" class="btn btn-danger">Delete</a></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% if budget.total_spent == 0 %}
+                                <h4>No purchases have been made.</h4>
+                                {% endif %}
+                            </div>
+                            <div class="tab-pane fade" id="add-expenses-{{budget.id}}" role="tabpanel" aria-labelledby="add-expenses-tab">
+                                <form action="{% url 'add_expense' budget.id %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="date" name="date" class="form-control" placeholder="Select Date" required/>
+                                    <input type="text" name="name" class="form-control" placeholder="name" required>
+                                    <textarea type="text" name="description" class="form-control" placeholder="description" required></textarea>
+                                    $<input type="number" name="amount" placeholder="amount" required>
+                                    <input type="submit" class="btn btn-danger" value="Add Expense">
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <div class="tab-pane fade" id="contact-{{budget.id}}" role="tabpanel" aria-labelledby="contact-tab">
+                    <div class="tab-pane fade" id="info-{{budget.id}}" role="tabpanel" aria-labelledby="info-tab">
                         <h4>Destination</h4>
                         <p>{{budget.trip_destination}}</p>
                         <h4>Description</h4>
@@ -108,17 +121,17 @@
     <div class="card-header"><h1>{{budget.name}}</h1>
         <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-{{budget.id}}" type="button" role="tab" aria-controls="home-{{budget.id}}" aria-selected="true">Funds</button>
+            <button class="nav-link active" id="funds-tab" data-bs-toggle="tab" data-bs-target="#funds-{{budget.id}}" type="button" role="tab" aria-controls="funds-{{budget.id}}" aria-selected="true">Funds</button>
             </li>
             <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-{{budget.id}}" type="button" role="tab" aria-controls="profile-{{budget.id}}" aria-selected="false">Expenses</button>
+            <button class="nav-link" id="expense-tab" data-bs-toggle="tab" data-bs-target="#expense-{{budget.id}}" type="button" role="tab" aria-controls="expense-{{budget.id}}" aria-selected="false">Expenses</button>
             </li>
             <li class="nav-item" role="presentation">
-            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-{{budget.id}}" type="button" role="tab" aria-controls="contact-{{budget.id}}" aria-selected="false">Info</button>
+            <button class="nav-link" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-{{budget.id}}" type="button" role="tab" aria-controls="info-{{budget.id}}" aria-selected="false">Info</button>
             </li>
         </ul>
         <div class="tab-content card-body" id="myTabContent">
-            <div class="tab-pane fade show active" id="home-{{budget.id}}" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade show active" id="funds-{{budget.id}}" role="tabpanel" aria-labelledby="funds-tab">
                 
                 {% if budget.remaining_funds == None %}
                 <p class="h3" style="color: {{budget.color}}">Funds Remaining: ${{ budget.initial_funds }}</p>
@@ -132,42 +145,55 @@
                 <p class=""><span class="h5" style="color: {{budget.color}}">Danger!</span> You have spent more than 75% of your budget</p>
                 {% endif %}
             </div>
-            <div class="tab-pane fade" id="profile-{{budget.id}}" role="tabpanel" aria-labelledby="profile-tab">
-                {% if budget.total_spent > 0 %}
-                <form action="{% url 'add_expense' budget.id %}" method="post">
-                    {% csrf_token %}
-                    <input type="date" name="date" class="form-control" placeholder="Select Date" required/>
-                    <input type="text" name="name" class="form-control" placeholder="name" required>
-                    <textarea type="text" name="description" class="form-control" placeholder="description" required></textarea>
-                    $<input type="number" name="amount" placeholder="amount" required>
-                    <input type="submit" class="btn btn-danger" value="Add Expense">
-                </form>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th id="date">Date</th>
-                            <th id="name">Name</th>
-                            <th id="amount">Amount</th>
-                            <th id="description" colspan="2">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      {% for expenditure in budget.expenditure_set.all %}
-                        <tr>
-                            <td>{{expenditure.date}}</td>
-                            <td>{{expenditure.name}}</td>
-                            <td>${{expenditure.amount}}</td>
-                            <td>{{ expenditure.description}}</td>
-                            <td><a href="{% url 'remove_expense' budget.id expenditure.id %}" class="btn btn-danger">Delete</a></td>
-                        </tr>
-                      {% endfor %}
-                    </tbody>
-                    {% else %}
-                        <h3>You haven't made any purchases yet.</h3>
-                    {% endif %}
-                  </table>
+            <div class="tab-pane fade" id="expense-{{budget.id}}" role="tabpanel" aria-labelledby="expense-tab">
+                <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active" id="all-expenses-tab" data-bs-toggle="pill" data-bs-target="#all-expenses-{{budget.id}}" type="button" role="tab" aria-controls="all-expenses-{{budget.id}}" aria-selected="true">All Expenses</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="add-expenses-tab" data-bs-toggle="pill" data-bs-target="#add-expenses-{{budget.id}}" type="button" role="tab" aria-controls="add-expenses-{{budget.id}}" aria-selected="false">Add Expense</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="tabContent">
+                    <div class="tab-pane fade show active" id="all-expenses-{{budget.id}}" role="tabpanel" aria-labelledby="all-expenses-tab">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="date">Date</th>
+                                    <th id="name">Name</th>
+                                    <th id="amount">Amount</th>
+                                    <th id="description" colspan="2">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {% for expenditure in budget.expenditure_set.all %}
+                                <tr>
+                                    <td>{{expenditure.date}}</td>
+                                    <td>{{expenditure.name}}</td>
+                                    <td>${{expenditure.amount}}</td>
+                                    <td>{{ expenditure.description}}</td>
+                                    <td><a href="{% url 'remove_expense' budget.id expenditure.id %}" class="btn btn-danger">Delete</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% if budget.total_spent == 0 %}
+                        <h4>No purchases have been made.</h4>
+                        {% endif %}
+                    </div>
+                    <div class="tab-pane fade" id="add-expenses-{{budget.id}}" role="tabpanel" aria-labelledby="add-expenses-tab">
+                        <form action="{% url 'add_expense' budget.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="date" name="date" class="form-control" placeholder="Select Date" required/>
+                            <input type="text" name="name" class="form-control" placeholder="name" required>
+                            <textarea type="text" name="description" class="form-control" placeholder="description" required></textarea>
+                            $<input type="number" name="amount" placeholder="amount" required>
+                            <input type="submit" class="btn btn-danger" value="Add Expense">
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="tab-pane fade" id="contact-{{budget.id}}" role="tabpanel" aria-labelledby="contact-tab">
+            <div class="tab-pane fade" id="info-{{budget.id}}" role="tabpanel" aria-labelledby="info-tab">
                 <h4>Destination</h4>
                 <p>{{budget.trip_destination}}</p>
                 <h4>Description</h4>
@@ -182,7 +208,7 @@
 </br>
 {% endfor %}
 <script>
-    
+
     $('th').click(function(){
     var table = $(this).parents('table').eq(0)
     var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))

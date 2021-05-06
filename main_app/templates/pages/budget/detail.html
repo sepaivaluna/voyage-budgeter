@@ -109,7 +109,7 @@
             <div class="carousel-item active">
                 <img src="{{ first_photo }}" > 
             </div>
-            {% for photo in photos %}
+        {% for photo in photos %}
         <div class="carousel-item">
             <img src="{{ photo }}" >
         </div>
@@ -133,5 +133,6 @@
     $( ".datefield" ).click(function() {
   alert( "Handler for .click() called." );
 });
+
 </script>
 {% endblock %}

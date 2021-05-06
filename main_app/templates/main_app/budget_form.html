@@ -14,12 +14,20 @@
     <input type="text" name="trip_destination" placeholder="Country">
     <textarea type="text" name="trip_description" placeholder="Description"></textarea>
     <input type="text" name="city" placeholder="City">
+    <select name="theme" class="form-select" id="inputGroupSelect01">
+      <option selected>Which do you prefer?</option>
+      <option value="Kitten">Kittens</option>
+      <option value="Puppies">Puppies</option>
+    </select>
+    
+
+
     {% if object %}
     <button type="submit" class="btn btn-success">Save</button>
-    <a href="{% url 'detail' budget.id %}">Cancel</a>
+    <a class="btn btn-secondary" href="{% url 'detail' budget.id %}">Cancel</a>
     {% else %}
     <button type="submit" class="btn btn-success">Create</button>
-    <a href="{% url 'budgets_index' %}">Cancel</a>
+    <a class="btn btn-secondary" href="{% url 'budgets_index' %}">Cancel</a>
     {% endif %}
 
   </form>

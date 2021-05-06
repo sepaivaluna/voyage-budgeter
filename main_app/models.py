@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+RELAX_THEMES = (('Kittens', 'Kittens'), ('Puppies', 'Puppies'))
+
 class City(models.Model):
     name = models.CharField(max_length=25)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -23,6 +25,7 @@ class Budget(models.Model):
     total_spent = models.IntegerField(null=True)
     color = models.CharField(max_length=100, null=True)
     city = models.CharField(max_length=25, null=True)
+    theme = models.CharField(max_length=7, choices=RELAX_THEMES, default=RELAX_THEMES[0][0], null=True)
 
     def __str__(self):
         return self.name
