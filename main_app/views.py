@@ -243,11 +243,3 @@ def search_expenses(request, budget_id):
 
   else:
     return render(request, 'pages/budget/filtered_expenses.html')
-
-
-# def get_local_weather(request, user_id):
-
-#   city = City.objects.get()
-
-#   url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'
-#   city_weather = requests.get(url.format(budget.city, WEATHER_API_KEY)).json() #request the API data and convert the JSON to Python 

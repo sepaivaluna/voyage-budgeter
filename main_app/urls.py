@@ -5,7 +5,7 @@ urlpatterns = [
     
     # home view
     path('', views.home, name="home"),
-
+    
     # budget urls
     path('budgets/', views.budgets_index, name='budgets_index'),
     path('budgets/create/', views.BudgetCreate.as_view(), name="create_budget"),
@@ -25,5 +25,4 @@ urlpatterns = [
     # search urls
     path(r'^$', views.search_budgets, name='search_budgets'),
     path('expenses/<int:budget_id>/', views.search_expenses, name='search_expenses'),
-
 ]
