@@ -4,6 +4,17 @@
 {% if user.is_authenticated %}
 <h1>Welcome back {{ user.username }}</h1>
 {% else %}
+<script>
+
+swal({
+    title: "Welcome to Voyage Budgeter!",
+    buttons: false,
+    timer: 2500,
+})
+    .then((value) => {
+        swal('Heads up!',`In order to access the full functionality you'll need to Login or Sign Up`, {buttons: true})
+    })
+</script>
 <h1>Welcome to Voyage Budgeter!</h1>
 <hr />
 <p>Save your money before you book your trip</p>
@@ -20,5 +31,4 @@
     <button type="submit" class="btn btn-secondary">Sign Up</button>
 </a>
 {% endif %}
-
 {% endblock %}

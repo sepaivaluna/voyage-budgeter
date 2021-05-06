@@ -7,6 +7,9 @@ from .models import Budget, City, Expenditure, PurchasePhotos
 from .forms import ExpenditureForm, CityForm
 from django.db.models import Q
 import requests
+from django.contrib.auth.decorators import login_required
+# Import the mixin for class-based views
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 import uuid
 import boto3
@@ -21,7 +24,7 @@ FLICKR_SECRET = config('FLICKR_SECRET')
 
 # Home
 def home(request):
-    return render(request, 'pages/home.html')
+  return render(request, 'pages/home.html')
 
 # Sign Up form
 def signup(request):
@@ -39,6 +42,7 @@ def signup(request):
   return render(request, 'registration/signup.html', context)
 
 # Show all budgets
+@login_required
 def budgets_index(request):
   budgets = Budget.objects.filter(user=request.user)
   expenditure_form = ExpenditureForm()
@@ -64,6 +68,7 @@ def budgets_index(request):
   return render(request, 'pages/budget/index.html', context)
 
 # Show budget details
+@login_required
 def budget_detail(request, budget_id):
 
     photos = []
@@ -94,6 +99,9 @@ def budget_detail(request, budget_id):
       photos.append(new_photo_url)
 
     first_photo = photos[0]
+
+    # if budget.remaining_funds < (budget.initial_funds * .50):
+      
     
     weather = {
       'temperature': city_weather['main']['temp'],
@@ -112,7 +120,7 @@ def budget_detail(request, budget_id):
 
 
 # Create new Budget
-class BudgetCreate(CreateView):
+class BudgetCreate(LoginRequiredMixin, CreateView):
   model = Budget
   fields = ['name', 'initial_funds', 'trip_destination', 'trip_description', 'city']
 
@@ -123,16 +131,17 @@ class BudgetCreate(CreateView):
 
 
 # Update Budget
-class BudgetUpdate(UpdateView):
+class BudgetUpdate(LoginRequiredMixin, UpdateView):
   model = Budget
   fields = ['initial_funds', 'trip_destination', 'trip_description', 'city']
 
 # Delete Budget
-class BudgetDelete(DeleteView):
+class BudgetDelete(LoginRequiredMixin, DeleteView):
   model = Budget
   success_url = '/budgets/'
 
 # Add expenditure to Budget
+@login_required
 def add_expense(request, budget_id):
   form = ExpenditureForm(request.POST)
 
@@ -146,6 +155,7 @@ def add_expense(request, budget_id):
 ## NOTE TBD
 
 # Delete expenditure from Budget
+@login_required
 def remove_expense(request, budget_id, expense_id):
   budget = Budget.objects.get(id=budget_id)
   expenditures = Expenditure.objects.filter(budget = budget)
@@ -155,6 +165,7 @@ def remove_expense(request, budget_id, expense_id):
   return redirect('detail', budget_id=budget_id)
 
 # Adding purchase photos
+@login_required
 def add_trip_photo(request, budget_id):
     # photo-file will be the "name" attribute on the <input type="file">
     photo_file = request.FILES.get('photo-file', None)
@@ -179,6 +190,7 @@ def add_trip_photo(request, budget_id):
     return redirect('detail', budget_id=budget_id)
 
 # Function used for querying through budgets
+@login_required
 def search_budgets(request):
     if request.method == 'GET':
         query = request.GET.get('q')
@@ -203,8 +215,9 @@ def search_budgets(request):
     else:
         return render(request, 'pages/budget/index.html')
 
+# Function used for querying through expenses
+@login_required
 def search_expenses(request, budget_id):
-
   if request.method == 'GET':
     query= request.GET.get('q')
 
@@ -230,3 +243,11 @@ def search_expenses(request, budget_id):
 
   else:
     return render(request, 'pages/budget/filtered_expenses.html')
+
+
+# def get_local_weather(request, user_id):
+
+#   city = City.objects.get()
+
+#   url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid={}'
+#   city_weather = requests.get(url.format(budget.city, WEATHER_API_KEY)).json() #request the API data and convert the JSON to Python 
