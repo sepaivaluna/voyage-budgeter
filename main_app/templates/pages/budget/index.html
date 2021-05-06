@@ -69,7 +69,7 @@
                                     <tbody>
                                       {% for expenditure in budget.expenditure_set.all %}
                                         <tr>
-                                            <td>{{expenditure.date}}</td>
+                                            <td>{{expenditure.date|date:"m-d-Y"}}</td>
                                             <td>{{expenditure.name}}</td>
                                             <td>${{expenditure.amount}}</td>
                                             <td>{{ expenditure.description}}</td>
@@ -88,7 +88,7 @@
                                     <input type="date" name="date" class="form-control" placeholder="Select Date" required/>
                                     <input type="text" name="name" class="form-control" placeholder="name" required>
                                     <textarea type="text" name="description" class="form-control" placeholder="description" required></textarea>
-                                    $<input type="number" name="amount" placeholder="amount" required>
+                                    $<input type="number" step="any" name="amount" placeholder="amount" min="0" required>
                                     <input type="submit" class="btn btn-danger" value="Add Expense">
                                 </form>
                             </div>
@@ -128,7 +128,7 @@
             <button class="nav-link" id="expense-tab" data-bs-toggle="tab" data-bs-target="#expense-{{budget.id}}" type="button" role="tab" aria-controls="expense-{{budget.id}}" aria-selected="false">Expenses <i class="far fa-minus-square"></i></button>
             </li>
             <li class="nav-item" role="presentation">
-            <button class="nav-link" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-{{budget.id}}" type="button" role="tab" aria-controls="info-{{budget.id}}" aria-selected="false">Info</button>
+            <button class="nav-link" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-{{budget.id}}" type="button" role="tab" aria-controls="info-{{budget.id}}" aria-selected="false"><i class="fas fa-info"></i></button>
             </li>
         </ul>
         <div class="tab-content card-body" id="myTabContent">
@@ -136,9 +136,12 @@
                 
                 {% if budget.remaining_funds == None %}
                 <p class="h3" style="color: {{budget.color}}">Funds Remaining: ${{ budget.initial_funds }}</p>
+                <p>You have {{ budget.percentage_difference }}% left from your initial funds</p>
                 {% else %}
                 <p class="h3" style="color: {{budget.color}}">Funds Remaining: ${{ budget.remaining_funds }}</p>
+                <p>You have {{ budget.percentage_difference }}% left from your initial funds</p>
                 {% endif %}
+
                 {% if budget.color == '#ff9966' %}
                 <br>
                 <p class=""><span class="h5" style="color: {{budget.color}}">WARNING!</span> You have spent more than half of your budget</p>
@@ -170,7 +173,7 @@
                             <tbody>
                               {% for expenditure in budget.expenditure_set.all %}
                                 <tr>
-                                    <td>{{expenditure.date}}</td>
+                                    <td>{{expenditure.date|date:"m-d-Y"}}</td>
                                     <td>{{expenditure.name}}</td>
                                     <td>${{expenditure.amount}}</td>
                                     <td>{{ expenditure.description}}</td>
@@ -189,20 +192,41 @@
                             <input type="date" name="date" class="form-control" placeholder="Select Date" required/>
                             <input type="text" name="name" class="form-control" placeholder="name" required>
                             <textarea type="text" name="description" class="form-control" placeholder="description" required></textarea>
-                            $<input type="number" name="amount" placeholder="amount" required>
+                            $<input type="number" step="any" name="amount" placeholder="amount" min="0" required>
                             <input type="submit" class="btn btn-danger" value="Add Expense">
                         </form>
                     </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="info-{{budget.id}}" role="tabpanel" aria-labelledby="info-tab">
-                <h4>Destination</h4>
-                <p>{{budget.trip_destination}}</p>
-                <h4>Description</h4>
-                <p>{{budget.trip_description}}</p>
-                <a href="{% url 'detail' budget.id %}" class="btn btn-primary">View More</a>
+                <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active" id="trip-info-tab" data-bs-toggle="pill" data-bs-target="#trip-info-{{budget.id}}" type="button" role="tab" aria-controls="trip-info-{{budget.id}}" aria-selected="true">Trip Info</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="more-info-tab" data-bs-toggle="pill" data-bs-target="#more-info-{{budget.id}}" type="button" role="tab" aria-controls="more-info-{{budget.id}}" aria-selected="false">More info</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="tabContent">
+                    <div class="tab-pane fade show active" id="trip-info-{{budget.id}}" role="tabpanel" aria-labelledby="trip-info-tab">
+                        <h4>Destination</h4>
+                        <p>{{budget.trip_destination}}</p>
+                        <h4>Description</h4>
+                        <p>{{budget.trip_description}}</p>
+                    </div>
+                    <div class="tab-pane fade" id="more-info-{{budget.id}}" role="tabpanel" aria-labelledby="more-info-tab">
+                        <div class="container d-flex">
+                            {% for photo in budget.purchasephotos_set.all %}
+                            <div class="card" style="width: 18rem;">
+                                <img src="{{ photo.url }}" class="card-img-top">
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <!-- <a href="{% url 'detail' budget.id %}" class="btn btn-primary">View More</a>
                 <a class="btn btn-warning" href="{% url 'update_budget' budget.id %}">Edit Details</a>
-                <a class="btn btn-danger" href="{% url 'delete_budget' budget.id %}">Delete</a>
+                <a class="btn btn-danger" href="{% url 'delete_budget' budget.id %}">Delete</a> -->
             </div>
         </div>
     </div>

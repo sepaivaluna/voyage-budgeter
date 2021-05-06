@@ -60,7 +60,7 @@ def budgets_index(request):
       budget.color = '#339900'
 
     percentage_difference = budget.remaining_funds/budget.initial_funds
-    print(percentage_difference)
+    budget.percentage_difference = round((percentage_difference * 100), 1)
     budget.save()
   context = {
     'budgets': budgets,
