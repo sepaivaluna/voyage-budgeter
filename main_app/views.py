@@ -152,7 +152,14 @@ def add_expense(request, budget_id):
 
     if new_expense.amount > budget.remaining_funds:
       context = {
-        'message': f"You have insufficient funds. You have {budget.remaining_funds} and you're trying to spend {new_expense.amount}",
+        'message': f"You have insufficient funds. You have {budget.remaining_funds} and you're trying to spend {new_expense.amount}.",
+        'budget': budget,
+      }
+      return render(request, 'funds_check/insufficient_funds.html', context)
+    elif new_expense.amount == budget.remaining_funds:
+      new_expense.save()
+      context = {
+        'message': f"You have spent all of your funds! You can no longer add anymore purchases after this one.",
         'budget': budget,
       }
       return render(request, 'funds_check/insufficient_funds.html', context)
