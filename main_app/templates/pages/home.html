@@ -3,19 +3,31 @@
 
 {% if user.is_authenticated %}
 <h1>Welcome back {{ user.username }}</h1>
+
+<script>
+    if (!localStorage.getItem("{{user.id}}-welcome")) {
+    swal({
+        title: "Welcome {{user.username}}!",
+        buttons: 'Hey',
+        timer: 2500,
+    })
+    localStorage.setItem("{{user.id}}-welcome", 'viewed');
+    }
+</script>
 {% else %}
 <script>
-
-swal({
+if ('{{user.id}}' === 'None') {
+    swal({
     title: "Welcome to Voyage Budgeter!",
     buttons: 'Hi',
     timer: 2500,
-})
-    .then((value) => {
+}).then((value) => {
         swal('Heads up!',`In order to access the full functionality you'll need to Login or Sign Up`, {buttons: 'Got it!'})
     })
+}
 </script>
-<h1>Welcome to Voyage Budgeter!</h1>
+
+<h1 class="display-2">Voyage Budgeter!</h1>
 <hr />
 <p>Save your money before you book your trip</p>
 

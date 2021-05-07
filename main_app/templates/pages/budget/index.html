@@ -1,18 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
+<h1 class="display-3 container">My Budgets</h1>
+<br><br>
 <div class="container d-fles justify-content-center align-items-center">
     {% if budgets.count > 0 %}
     <form action="{% url 'search_budgets' %}" method="GET" value="{{request.GET.q}}" >
-        Search <input type="text" name="q" value="{{request.GET.q}}" placeholder="Search posts"/>
-        <input type="submit" name="submit" value="Search"/>
+        <div class="row mb-3 col-md-12">
+            <div class="col-md-6">
+                <input id="inputSearch" type="text" name="q" value="{{request.GET.q}}" class="form-control" placeholder="Search budgets, e.g., Cool Budget" />
+            </div>
+            <br><br>
+            <div class="col-md-6">
+                <input class="btn btn-success" type="submit" name="submit" value="Search" />
+            </div>
+        </div>
     </form>
     <br><br>
+    {% else %}
+        <h2 class="display-6">You don't have any budgets created yet. Click below to create your first budget!</h2>
+        <a href="{% url 'create_budget' %}" class="btn btn-success">Create</a>
     {% endif %}
-        
-        
+
         {% if submitbutton == 'Search' and request.GET.q != '' %}
         {% if results %}
-        <h1>Results for <b>{{ request.GET.q }}</b></h1>
+        <h1>Results for '<b>{{ request.GET.q }}</b>'</h1>
         <br/><br/>
         
         {% for budget in results %}
@@ -83,13 +94,27 @@
                                 {% endif %}
                             </div>
                             <div class="tab-pane fade" id="add-expenses-{{budget.id}}" role="tabpanel" aria-labelledby="add-expenses-tab">
-                                <form action="{% url 'add_expense' budget.id %}" method="post">
+                                <form action="{% url 'add_expense' budget.id %}" method="post" class="row g-3">
                                     {% csrf_token %}
-                                    <input type="date" name="date" class="form-control" placeholder="Select Date" required/>
-                                    <input type="text" name="name" class="form-control" placeholder="name" required>
-                                    <textarea type="text" name="description" class="form-control" placeholder="description" required></textarea>
-                                    $<input type="number" step="any" name="amount" placeholder="amount" min="0" oninput="validity.valid||(value='');" required>
-                                    <input type="submit" class="btn btn-danger" value="Add Expense">
+                                    <div class="col-md-6">
+                                        <label for="inputDate" class="col-form-label">Date</label>
+                                        <input type="date" name="date" class="form-control" id="inputDate" placeholder="Select date..." required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputName" class="col-form-label">Merchant Name</label>
+                                        <input type="text" name="name" class="form-control" id="inputName" placeholder="E.g., Chic-Fil-A" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputDescription" class="col-form-label">Purchase Description</label>
+                                        <input type="text" name="description" class="form-control" id="inputDescription" placeholder="E.g., Fast Food" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputAmount" class="col-form-label">Amount</label>
+                                        <input type="number" step="any" name="amount" class="form-control" id="inputAmount" min="0" placeholder="E.g., 20" required>
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        <button type="submit" class="btn btn-danger">Add Expense</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -111,7 +136,7 @@
         {% endfor %}
         <a class="btn btn-secondary" href="{% url 'budgets_index' %}">Back to all budgets</a>
         {% else %}
-        <h1>No search results for this query</h1>
+        <h1>No search results for '<b>{{ request.GET.q }}</b>'</h1>
         <a class="btn btn-secondary" href="{% url 'budgets_index' %}">Back to all budgets</a>
         {% endif %}
         {% endif %}
@@ -187,13 +212,28 @@
                         {% endif %}
                     </div>
                     <div class="tab-pane fade" id="add-expenses-{{budget.id}}" role="tabpanel" aria-labelledby="add-expenses-tab">
-                        <form action="{% url 'add_expense' budget.id %}" method="post">
+
+                        <form action="{% url 'add_expense' budget.id %}" method="post" class="row g-3">
                             {% csrf_token %}
-                            <input type="date" name="date" class="form-control" placeholder="Select Date" required/>
-                            <input type="text" name="name" class="form-control" placeholder="name" required>
-                            <textarea type="text" name="description" class="form-control" placeholder="description" required></textarea>
-                            $<input type="number" step="any" name="amount" placeholder="amount" min="0" oninput="validity.valid||(value='');" required>
-                            <input type="submit" class="btn btn-danger" value="Add Expense">
+                            <div class="col-md-6">
+                                <label for="inputDate" class="col-form-label">Date</label>
+                                <input type="date" name="date" class="form-control" id="inputDate" placeholder="Select date..." required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputName" class="col-form-label">Merchant Name</label>
+                                <input type="text" name="name" class="form-control" id="inputName" placeholder="E.g., Chic-Fil-A" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputDescription" class="col-form-label">Purchase Description</label>
+                                <input type="text" name="description" class="form-control" id="inputDescription" placeholder="E.g., Fast Food" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputAmount" class="col-form-label">Amount</label>
+                                <input type="number" step="any" name="amount" class="form-control" id="inputAmount" min="0" placeholder="E.g., 20" required>
+                            </div>
+                            <div class="col-md-12 text-center">
+                                <button type="submit" class="btn btn-danger">Add Expense</button>
+                            </div>
                         </form>
                     </div>
                 </div>

@@ -13,19 +13,19 @@
   {% csrf_token %}
   <div class="col-md-6">
     <label for="inputEmail4" class="form-label">Name</label>
-    <input type="text" name="name" class="form-control" id="inputEmail4" placeholder="Coolest Budget">
+    <input type="text" name="name" class="form-control" id="inputEmail4" placeholder="E.g., Coolest Budget">
   </div>
   <div class="col-md-6">
     <label for="inputPassword4" class="form-label">Initial Funds</label>
-    <input type="number" name="initial_funds" class="form-control" id="inputPassword4" min="0" placeholder="1000" oninput="validity.valid||(value='');">
+    <input type="number" name="initial_funds" class="form-control" id="inputPassword4" min="0" placeholder="E.g., 1000" oninput="validity.valid||(value='');">
   </div>
   <div class="col-md-6">
     <label for="inputAddress" class="form-label">Country</label>
-    <input type="text" name="trip_destination" class="form-control" id="inputAddress" placeholder="Cuba">
+    <input type="text" name="trip_destination" class="form-control" id="inputAddress" placeholder="E.g., Cuba">
   </div>
   <div class="col-md-6">
     <label for="inputAddress2" class="form-label">City</label>
-    <input type="text" name="city" class="form-control" id="inputAddress2" placeholder="Havana">
+    <input type="text" name="city" class="form-control" id="inputAddress2" placeholder="E.g., Havana">
   </div>
   <div class="col-md-4">
     <label for="inputTheme" class="form-label">Theme</label>
@@ -37,7 +37,7 @@
   </div>
   <div class="col-md-8">
     <label for="inputZip" class="form-label">Description</label>
-    <textarea type="text" name="trip_description" class="form-control" id="inputZip" placeholder="Going to celebrate my graduation from G.A!"></textarea>
+    <textarea type="text" name="trip_description" class="form-control" id="inputZip" placeholder="E.g., Going to celebrate my graduation from G.A!"></textarea>
   </div>
   <div class="col-12 text-center">
     {% if object %}

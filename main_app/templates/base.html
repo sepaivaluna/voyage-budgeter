@@ -19,7 +19,7 @@
     <title>Voyage Budgeter</title>
 </head>
 <body>
-    <header class="navbar navbar-dark bg-primary">
+    <header class="navbar navbar-dark bg-primary sticky-top">
       <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'home' %}"><img class="nav-logo" src="{% static 'logo/logo.svg' %}"></a>
         <div class="d-flex justify-content-evenly">
@@ -44,7 +44,7 @@
               <a class="nav-link" href="{% url 'create_budget' %}">Create New Budget <i class="fas fa-folder-plus"></i></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'logout' %}">Log Out <i class="fas fa-sign-out-alt"></i></a>
+              <a id="logout" class="nav-link" href="{% url 'logout' %}">Log Out <i class="fas fa-sign-out-alt"></i></a>
             </li>
             {% else %}
             <li class="nav-item">
