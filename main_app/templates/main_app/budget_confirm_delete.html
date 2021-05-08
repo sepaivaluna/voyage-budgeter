@@ -1,13 +1,43 @@
 {% extends 'base.html' %}
-
+{% block picture %} 
+class="home-background"
+{% endblock %}
+{% block navbar %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'home' %}">Home <i class="fas fa-home"></i></a>
+  </li>
+  {% if user.is_authenticated %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'budgets_index' %}">View My Budgets <i class="fas fa-layer-group"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'create_budget' %}">Create New Budget <i class="fas fa-folder-plus"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#">Delete {{ object.name }}<i class="fas fa-trash"></i></a>
+  </li>
+  <li class="nav-item">
+    <a id="logout" class="nav-link" href="{% url 'logout' %}">Log Out <i class="fas fa-sign-out-alt"></i></a>
+  </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'signup' %}">Sign Up <i class="fas fa-users-cog"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'login' %}">Log In <i class="fas fa-sign-in-alt"></i></a>
+  </li>
+  {% endif %}
+{% endblock %}
 {% block content %}
-  <h1>Delete Budget</h1>
+<div class="container text-center">
+  <h1 class="display-3 mb-5 mt-5">Delete Budget</h1>
 
-  <h4>Are you sure you want to delete <span class="teal-text">{{ object.name }}</span>?</h4>
+  <h4 class="display-6 mt-5 mb-5">Are you sure you want to delete {{ object.name }}?</h4>
 
   <form action="" method="POST">
     {% csrf_token %}
-    <input type="submit" value="Yes - Delete!" class="btn btn-danger">
-    <a href="{% url 'detail' budget.id %}">Cancel</a>
+    <input type="submit" value="Delete" class="btn btn-danger m-4">
+    <a class="btn btn-secondary m-4" href="{% url 'detail' budget.id %}">Cancel</a>
   </form>
+</div>
 {% endblock %}

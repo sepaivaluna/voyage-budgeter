@@ -100,8 +100,8 @@ def budget_detail(request, budget_id):
       new_photo_url = f'http://farm{photo["farm"]}.staticflickr.com/{photo["server"]}/{photo["id"]}_{photo["secret"]}.jpg'
       photos.append(new_photo_url)
 
-    first_photo = photos[0]
     random_photo = random.choice(photos)
+    first_photo = photos[0]
     
     weather = {
       'temperature': round(city_weather['main']['temp'], 1),
@@ -145,7 +145,7 @@ def update_budget(request, budget_id):
     'budget': budget,
   }
   return render(request, "main_app/budget_update_form.html", context)
-  
+
 # Delete Budget
 class BudgetDelete(LoginRequiredMixin, DeleteView):
   model = Budget
@@ -164,7 +164,7 @@ def add_expense(request, budget_id):
 
     if new_expense.amount > budget.remaining_funds:
       context = {
-        'message': f"You have insufficient funds. You have {budget.remaining_funds} and you're trying to spend {new_expense.amount}.",
+        'message': f"You have insufficient funds. You have {budget.remaining_funds} and you're trying to spend {new_expense.amount}",
         'budget': budget,
       }
       return render(request, 'funds_check/add_expense.html', context)
@@ -180,6 +180,8 @@ def add_expense(request, budget_id):
       new_expense.save()
       budget.remaining_funds -= round(new_expense.amount, 2)
       budget.total_spent += round(new_expense.amount, 2)
+      percentage_difference = budget.remaining_funds/budget.initial_funds
+      budget.percentage_difference = round((percentage_difference * 100), 1)
       budget.save()
       context = {
         'message': f"You have spent all of your funds! You can no longer add anymore purchases after this one.",
@@ -191,6 +193,8 @@ def add_expense(request, budget_id):
       'message': 'You succesfully added this expense to your budget',
       'budget': budget,
     }
+    percentage_difference = budget.remaining_funds/budget.initial_funds
+    budget.percentage_difference = round((percentage_difference * 100), 1)
     budget.remaining_funds -= round(new_expense.amount, 2)
     budget.total_spent += round(new_expense.amount, 2)
     budget.save()

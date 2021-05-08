@@ -1,41 +1,114 @@
 {% extends 'base.html' %}
+{% block picture %} 
+class="home-background"
+{% endblock %}
+{% block navbar %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'home' %}">Home <i class="fas fa-home"></i></a>
+  </li>
+  {% if user.is_authenticated %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'budgets_index' %}">View My Budgets <i class="fas fa-layer-group"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'create_budget' %}">Create New Budget <i class="fas fa-folder-plus"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#">Add expense<i class="fas fa-cart-plus"></i></a>
+  </li>
+  <li class="nav-item">
+    <a id="logout" class="nav-link" href="{% url 'logout' %}">Log Out <i class="fas fa-sign-out-alt"></i></a>
+  </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'signup' %}">Sign Up <i class="fas fa-users-cog"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'login' %}">Log In <i class="fas fa-sign-in-alt"></i></a>
+  </li>
+  {% endif %}
+{% endblock %}
 {% block content %}
 
-<h1 id="message">{{message}}</h1>
+<h1 class="display-5" id="message">{{message}}</h1>
 {% if message == "You succesfully added this expense to your budget" %}
-<div class="container">
-    <h3>You have {{ budget.remaining_funds }} remaining</h3>
-    <h3>You have spent a total of: {{ budget.total_spent }}</h3>
-    <br>
-    <a class="btn btn-secondary" href="{% url 'detail' budget.id %}">Back to Budget</a>
-    <a class="btn btn-primary" href="{% url 'budgets_index' %}">View All Budgets</a>
+<div class="container text-center">
+    <h3 class="display-6 mt-5 mb-5">You have {{ budget.remaining_funds }} remaining<br>
+   You have spent a total of: {{ budget.total_spent }}</h3>
+
+    <div class="container col-md-12 text-center d-flex justify-content-evenly">
+        <a class="btn btn-secondary" href="{% url 'detail' budget.id %}">View Budget</a>
+        <a class="btn btn-primary" href="{% url 'budgets_index' %}">All Budgets</a>
+    </div>
 </div>
 <script>
     if ($('#message').text() === 'You succesfully added this expense to your budget') {
-        swal('You discovered a new way of doing things');
+        swal({
+            title: 'Expense successfully added',
+            icon: "success",
+        });
     }
 </script>
 
 {% elif message == "You have spent all of your funds! You can no longer add anymore purchases after this one." %}
-<div class="container">
-    <a class="btn btn-secondary" href="{% url 'detail' budget.id %}">Back to Budget</a>
-    <a class="btn btn-primary" href="{% url 'budgets_index' %}">View All Budgets</a>
+<div class="container col-md-12 text-center d-flex justify-content-evenly mt-5">
+    <a class="btn btn-secondary" href="{% url 'detail' budget.id %}">View Budget</a>
+    <a class="btn btn-primary" href="{% url 'budgets_index' %}">All Budgets</a>
 </div>
+<script>
+    if ($('#message').text() === 'You have spent all of your funds! You can no longer add anymore purchases after this one.') {
+        swal({
+            title: 'Expense successfully added',
+            icon: 'success',
+        }).then(() => {
+        swal({
+            title: 'Uh oh! You have spent all of your budget',
+            icon: "warning",
+        })});
+    }
+</script>
 {% else %}
-<h3>Add another expense</h3>
 
-<form action="{% url 'add_expense' budget.id %}" method="post">
+<h3 class="display-6 mt-5 mb-5">Add another expense</h3>
+
+<form action="{% url 'add_expense' budget.id %}" method="post" class="row g-3">
     {% csrf_token %}
-    <input type="date" name="date" class="form-control" placeholder="Select Date"/>
-    <input type="text" name="name" class="form-control" placeholder="name" required>
-    <textarea type="text" name="description" class="form-control" placeholder="description" required></textarea>
-    $<input type="number" step="any" name="amount" placeholder="amount" min="0"  required>
-    <input type="submit" class="btn btn-danger" value="Add Expense">
+    <div class="col-md-6">
+        <label for="inputDate" class="col-form-label">Date</label>
+        <input type="date" name="date" class="form-control" id="inputDate" placeholder="Select date..." required>
+    </div>
+    <div class="col-md-6">
+        <label for="inputName" class="col-form-label">Merchant Name</label>
+        <input type="text" name="name" class="form-control" id="inputName" placeholder="E.g., Chic-Fil-A" required>
+    </div>
+    <div class="col-md-6">
+        <label for="inputDescription" class="col-form-label">Purchase Description</label>
+        <input type="text" name="description" class="form-control" id="inputDescription" placeholder="E.g., Fast Food" required>
+    </div>
+    <div class="col-md-6">
+        <label for="inputAmount" class="col-form-label">Amount</label>
+        <input type="number" step="any" name="amount" class="form-control" id="inputAmount" min="0" placeholder="E.g., 20" required>
+    </div>
+    <div class="col-md-12 text-center mt-5 mb-5">
+        <button type="submit" class="btn btn-success">Add</button>
+    </div>
 </form>
+<script>
+    if ($('#message').text() !== 'You have spent all of your funds! You can no longer add anymore purchases after this one.' || $('#message').text() !== 'You succesfully added this expense to your budget') {
+        swal({
+            title: 'Could not add expense',
+            icon: 'error',
+        }).then(() => {
+        swal({
+            title: 'Uh oh! You do not have sufficient funds',
+            icon: "warning",
+        })});
+    }
+</script>
 <br>
-<div class="container">
-    <a class="btn btn-secondary" href="{% url 'detail' budget.id %}">Back to Budget</a>
-    <a class="btn btn-primary" href="{% url 'budgets_index' %}">View All Budgets</a>
+<div class="container col-md-12 text-center d-flex justify-content-evenly">
+    <a class="btn btn-secondary" href="{% url 'detail' budget.id %}">View Budget</a>
+    <a class="btn btn-primary" href="{% url 'budgets_index' %}">All Budgets</a>
 </div>
 {% endif %}
 {% endblock %}
