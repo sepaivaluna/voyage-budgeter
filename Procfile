@@ -1,0 +1,1 @@
+web: gunicorn voyagebudgeter_project.wsgi
