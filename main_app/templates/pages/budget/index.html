@@ -1,13 +1,39 @@
 {% extends 'base.html' %}
+{% block picture %} 
+style="background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.parade.com%2Fwp-content%2Fuploads%2F2018%2F01%2Fpiggy-bank-dollar-finances-ftr.jpg&f=1&nofb=1')"
+{% endblock %}
+{% block navbar %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'home' %}">Home <i class="fas fa-home"></i></a>
+  </li>
+  {% if user.is_authenticated %}
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="{% url 'budgets_index' %}">View My Budgets <i class="fas fa-layer-group"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'create_budget' %}">Create New Budget <i class="fas fa-folder-plus"></i></a>
+  </li>
+  <li class="nav-item">
+    <a id="logout" class="nav-link" href="{% url 'logout' %}">Log Out <i class="fas fa-sign-out-alt"></i></a>
+  </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'signup' %}">Sign Up <i class="fas fa-users-cog"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'login' %}">Log In <i class="fas fa-sign-in-alt"></i></a>
+  </li>
+  {% endif %}
+{% endblock %}
 {% block content %}
 <h1 class="display-3 container">My Budgets</h1>
 <br><br>
 <div class="container d-fles justify-content-center align-items-center">
-    {% if budgets.count > 0 %}
+    {% if budgets.count > 0 or results.count > 0 or results.count == 0%}
     <form action="{% url 'search_budgets' %}" method="GET" value="{{request.GET.q}}" >
         <div class="row mb-3 col-md-12">
             <div class="col-md-6">
-                <input id="inputSearch" type="text" name="q" value="{{request.GET.q}}" class="form-control" placeholder="Search budgets, e.g., Cool Budget" />
+                <input id="inputSearch" type="text" name="q" value="{{request.GET.q}}" class="form-control" placeholder="Search budgets, e.g., Cool Budget" required/>
             </div>
             <br><br>
             <div class="col-md-6">
@@ -28,7 +54,7 @@
         
         {% for budget in results %}
         
-        <div class="card text-center">
+        <div class="card text-center cards-in-index">
             <div class="card-header"><a style="text-decoration: none;" href="{% url 'detail' budget.id %}"><h1>{{budget.name}}</h1></a>
                 <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -143,7 +169,7 @@
 </div>
 
 {% for budget in budgets %}
-<div class="card text-center">
+<div class="card text-center cards-in-index">
     <div class="card-header"><a style="text-decoration: none;" href="{% url 'detail' budget.id %}"><h1>{{budget.name}}</h1></a>
         <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -244,15 +270,32 @@
                       <button class="nav-link active" id="trip-info-tab" data-bs-toggle="pill" data-bs-target="#trip-info-{{budget.id}}" type="button" role="tab" aria-controls="trip-info-{{budget.id}}" aria-selected="true">Trip Info</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="more-info-tab" data-bs-toggle="pill" data-bs-target="#more-info-{{budget.id}}" type="button" role="tab" aria-controls="more-info-{{budget.id}}" aria-selected="false">More info</button>
+                      <button class="nav-link" id="more-info-tab" data-bs-toggle="pill" data-bs-target="#more-info-{{budget.id}}" type="button" role="tab" aria-controls="more-info-{{budget.id}}" aria-selected="false">More Info <i class="fas fa-camera"></i></button>
                     </li>
                 </ul>
                 <div class="tab-content" id="tabContent">
                     <div class="tab-pane fade show active" id="trip-info-{{budget.id}}" role="tabpanel" aria-labelledby="trip-info-tab">
-                        <h4>Destination</h4>
-                        <p>{{budget.trip_destination}}</p>
-                        <h4>Description</h4>
-                        <p>{{budget.trip_description}}</p>
+                        <div class="container row g-3">
+                            <div class="col-md-6">
+                                <h4 class="display-6">Destination</h4>
+                                <p>{{budget.trip_destination}}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="display-6">Description</h4>
+                                <p>{{budget.trip_description}}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="display-6">Initial Budget</h4>
+                                <p>${{budget.initial_funds}}.00</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="display-6">Total Spent</h4>
+                                <p>${{budget.total_spent}}</p>
+                            </div>
+                            <div class="col-md-12">
+                                <a href="{% url 'detail' budget.id %}" class="btn btn-primary">View More</a>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="more-info-{{budget.id}}" role="tabpanel" aria-labelledby="more-info-tab">
                         <div class="container d-flex">

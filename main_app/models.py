@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-RELAX_THEMES = (('Kittens', 'Kittens'), ('Puppies', 'Puppies'))
+RELAX_THEMES = (('Baby Kittens', 'Baby Kittens'), ('Golden Retriever Puppies', 'Golden Retriever Puppies'))
 
 class City(models.Model):
     name = models.CharField(max_length=25)
@@ -25,7 +25,7 @@ class Budget(models.Model):
     total_spent = models.IntegerField(null=True)
     color = models.CharField(max_length=100, null=True)
     city = models.CharField(max_length=25, null=True)
-    theme = models.CharField(max_length=7, choices=RELAX_THEMES, default=RELAX_THEMES[0][0], null=True)
+    theme = models.CharField(max_length=25, choices=RELAX_THEMES, default=RELAX_THEMES[0][0], null=True)
     percentage_difference = models.CharField(max_length=10, null=True)
 
     def __str__(self):

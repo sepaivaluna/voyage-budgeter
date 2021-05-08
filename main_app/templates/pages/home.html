@@ -1,8 +1,42 @@
 {% extends 'base.html' %}
+{% block picture %}
+{% if user.is_authenticated %}
+
+{% else %}
+class="home-background"
+{% endif %}
+{% endblock %}
+{% load static %}
+{% block navbar %}
+<li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home <i class="fas fa-home"></i></a>
+  </li>
+  {% if user.is_authenticated %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'budgets_index' %}">View My Budgets <i class="fas fa-layer-group"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'create_budget' %}">Create New Budget <i class="fas fa-folder-plus"></i></a>
+  </li>
+  <li class="nav-item">
+    <a id="logout" class="nav-link" href="{% url 'logout' %}">Log Out <i class="fas fa-sign-out-alt"></i></a>
+  </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'signup' %}">Sign Up <i class="fas fa-users-cog"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'login' %}">Log In <i class="fas fa-sign-in-alt"></i></a>
+  </li>
+  {% endif %}
+{% endblock %}
 {% block content %}
 
 {% if user.is_authenticated %}
-<h1>Welcome back {{ user.username }}</h1>
+
+<h1 class="display-3">Home</h1>
+
+
 
 <script>
     if (!localStorage.getItem("{{user.id}}-welcome")) {
@@ -21,29 +55,29 @@ if ('{{user.id}}' === 'None') {
     title: "Welcome to Voyage Budgeter!",
     buttons: 'Hi',
     timer: 2500,
-}).then((value) => {
-        swal('Heads up!',`In order to access the full functionality you'll need to Login or Sign Up`, {buttons: 'Got it!'})
-    })
-}
+})}
 </script>
+<div class="container d-flex flex-column text-center">
+    <div class="container text-center">
+        <img src="{% static 'logo/home-logo.svg' %}" alt="home-logo" />
+    </div>
 
-<h1 class="display-2">Voyage Budgeter!</h1>
-<hr />
-<p>Save your money before you book your trip</p>
+    </br>
 
-</br>
+    <div class="d-flex text-center justify-content-evenly">
+        <div class="text-center">
+            <a href="{% url 'login' %}">
+                <button type="submit" class="btn btn-outline-primary">Log In</button>
+            </a>
+        </div>
 
-<h3>Please Log In</h3>
-<a href="{% url 'login' %}">
-    <button type="submit" class="btn btn-primary">Log In</button>
-</a>
-
-<h3><span class="or">or</span> Sign Up</h3>
-<a href="{% url 'signup' %}">
-    <button type="submit" class="btn btn-secondary">Sign Up</button>
-</a>
+        <div class="text-center">
+            <a href="{% url 'signup' %}">
+                <button type="submit" class="btn btn-outline-success">Sign Up</button>
+            </a>
+        </div>
+    </div>
+</div>
 {% endif %}
-
-
-
 {% endblock %}
+

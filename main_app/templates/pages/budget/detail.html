@@ -1,9 +1,48 @@
 {% extends 'base.html' %}
-{% block content %}
-<h1>Details</h1>
+{% block picture %}
+{% if budget.theme == 'Golden Retriever Puppies' %}
+style="background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.wallpaperscraft.com%2Fimage%2Fpuppy_dog_cute_144724_3840x2160.jpg&f=1&nofb=1')"
+{% else %}
+style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgetwallpapers.com%2Fwallpaper%2Ffull%2F8%2Ff%2F4%2F784967-cute-cat-wallpapers-2048x1536-windows-10.jpg&f=1&nofb=1')"
+{% endif %}
+{% endblock %}
 
-<div class="row">
-    <div class="card">
+{% block navbar %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'home' %}">Home <i class="fas fa-home"></i></a>
+  </li>
+  {% if user.is_authenticated %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'budgets_index' %}">View My Budgets <i class="fas fa-layer-group"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'create_budget' %}">Create New Budget <i class="fas fa-folder-plus"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="{% url 'detail' budget.id %}">{{ budget.name }} Details <i class="fas fa-info-circle"></i></a>
+  </li>
+  <li class="nav-item">
+    <a id="logout" class="nav-link" href="{% url 'logout' %}">Log Out <i class="fas fa-sign-out-alt"></i></a>
+  </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'signup' %}">Sign Up <i class="fas fa-users-cog"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'login' %}">Log In <i class="fas fa-sign-in-alt"></i></a>
+  </li>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if budget.theme == 'Golden Retriever Puppies' %}
+<h1 id="puppies-bg" class="display-3" >Details</h1>
+{% else %}
+<h1 id="kittens-bg" class="display-3" >Details</h1>
+{% endif %}
+<br>
+<div class="row" id="detail-row">
+    <div class="card" id="detail-card">
         <div class="card-content">
             <div class="d-flex justify-content-between">
                 <h2 class="card-title m-4 text-center">{{ budget.name }}</h2>
@@ -107,11 +146,11 @@
     <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{{ first_photo }}" > 
+                <img src="{{ first_photo }}" style="max-height: 400px; width: 400px; min-height: 400px; min-width: 400px;"> 
             </div>
         {% for photo in photos %}
         <div class="carousel-item">
-            <img src="{{ photo }}" >
+            <img src="{{ photo }}" style="max-height: 400px; width: 400px; min-height: 400px; min-width: 400px;">
         </div>
         {% endfor %}
         </div>

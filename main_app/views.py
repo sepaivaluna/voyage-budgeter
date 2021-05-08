@@ -100,12 +100,9 @@ def budget_detail(request, budget_id):
       photos.append(new_photo_url)
 
     first_photo = photos[0]
-
-    # if budget.remaining_funds < (budget.initial_funds * .50):
-      
     
     weather = {
-      'temperature': city_weather['main']['temp'],
+      'temperature': round(city_weather['main']['temp'], 1),
       'description': city_weather['weather'][0]['description'],
       'icon': city_weather['weather'][0]['icon']
     }

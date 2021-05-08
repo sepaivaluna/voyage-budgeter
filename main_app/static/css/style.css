@@ -24,3 +24,67 @@
 .btn {
     width: 120px !important;
 }
+
+#puppies-bg:before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f6d3";
+    display: inline-block;
+    padding-right: 3px;
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+#kittens-bg:before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f6be";
+    display: inline-block;
+    padding-right: 3px;
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+#body-container {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    font-weight: 300;    
+}
+
+#detail-row,
+#detail-card {
+    background-color: rgba(255,255,255,.45);
+}
+
+.navbar {
+    color: white;
+    padding: 0 5px;
+    background-image: linear-gradient(to right, #D5F2DA, #9CD9A5, #48CF64);
+}
+
+.cards-in-index {
+    background-color: rgba(239, 255, 241, 0.75);
+}
+
+#inputSearch:before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f688";
+    display: inline-block;
+    padding-right: 3px;
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+.home-background {
+    background-image: linear-gradient(to bottom,  white,#D5F2DA, #9CD9A5, #48CF64);
+}
