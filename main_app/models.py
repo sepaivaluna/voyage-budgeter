@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-RELAX_THEMES = (('Baby Kittens', 'Baby Kittens'), ('Golden Retriever Puppies', 'Golden Retriever Puppies'))
+RELAX_THEMES = (('Baby Kittens', 'Baby Kittens'), ('Golden Retriever Puppies', 'Golden Retriever Puppies'), ('None','None'))
 
 class City(models.Model):
     name = models.CharField(max_length=25)

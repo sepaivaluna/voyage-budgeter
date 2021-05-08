@@ -25,7 +25,9 @@
           <a class="navbar-brand" href="{% url 'home' %}"><img class="nav-logo" src="{% static 'logo/nav-logo.svg' %}"></a>
           <div class="d-flex justify-content-evenly">
             {% if weather %}
-              <p class="m-3">{{ budget.city }}: {{ weather.temperature }} ° F</p>
+              <p class="m-3">{{ weather.temperature }} ° F<figure class="m-0">
+                <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="Image">
+            </figure></p>
             {% endif %}
             <button class="navbar-toggler" style="height: 50px; margin-top: 2px" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

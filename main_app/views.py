@@ -4,12 +4,13 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Budget, City, Expenditure, PurchasePhotos
-from .forms import ExpenditureForm, CityForm
+from .forms import ExpenditureForm, CityForm, UpdateBudgetForm
 from django.db.models import Q
 import requests
 from django.contrib.auth.decorators import login_required
 # Import the mixin for class-based views
 from django.contrib.auth.mixins import LoginRequiredMixin
+import random
 
 import uuid
 import boto3
@@ -100,6 +101,7 @@ def budget_detail(request, budget_id):
       photos.append(new_photo_url)
 
     first_photo = photos[0]
+    random_photo = random.choice(photos)
     
     weather = {
       'temperature': round(city_weather['main']['temp'], 1),
@@ -112,7 +114,8 @@ def budget_detail(request, budget_id):
         'after_expenses_budget': round(after_expenses_budget, 2),
         'weather': weather,
         'photos': photos,
-        'first_photo': first_photo
+        'first_photo': first_photo,
+        'random_photo': random_photo
     }
     return render(request, 'pages/budget/detail.html', context)
 
@@ -126,13 +129,23 @@ class BudgetCreate(LoginRequiredMixin, CreateView):
     form.instance.user = self.request.user
     return super().form_valid(form)
 
-
-
 # Update Budget
-class BudgetUpdate(LoginRequiredMixin, UpdateView):
-  model = Budget
-  fields = ['initial_funds', 'trip_destination', 'trip_description', 'city']
+@login_required
+def update_budget(request, budget_id):
+  budget = Budget.objects.get(id=budget_id)
 
+  form = UpdateBudgetForm(request.POST or None, instance=budget)
+  
+  if form.is_valid():
+    form.save()
+    return redirect('detail', budget_id=budget_id)
+  
+  context = {
+    'form': form,
+    'budget': budget,
+  }
+  return render(request, "main_app/budget_update_form.html", context)
+  
 # Delete Budget
 class BudgetDelete(LoginRequiredMixin, DeleteView):
   model = Budget

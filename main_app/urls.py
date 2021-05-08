@@ -10,7 +10,7 @@ urlpatterns = [
     path('budgets/', views.budgets_index, name='budgets_index'),
     path('budgets/create/', views.BudgetCreate.as_view(), name="create_budget"),
     path('budgets/<int:budget_id>/', views.budget_detail, name='detail'),
-    path('budgets/<int:pk>/update/', views.BudgetUpdate.as_view(), name='update_budget'),
+    path('budgets/<int:budget_id>/update/', views.update_budget, name='update_budget'),
     path('budgets/<int:pk>/delete/', views.BudgetDelete.as_view(), name="delete_budget"),
     # add photo
     path('budgets/<int:budget_id>/add_photo/', views.add_trip_photo, name='add_trip_photo'),

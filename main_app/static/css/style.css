@@ -88,3 +88,24 @@
 .home-background {
     background-image: linear-gradient(to bottom,  white,#D5F2DA, #9CD9A5, #48CF64);
 }
+
+#update-form > p > label {
+    cursor: default;
+    margin-bottom: .5rem;
+    display: inline-block
+}
+
+#logged-in-logo {
+    transition: transform 2s;
+}
+
+#logged-in-logo:hover {
+    transform: rotate(1800);
+}
+
+@media (min-width: 768px) {
+    #update-form > p {
+        flex: 0 0 auto;
+        width: 50%;
+    }
+}

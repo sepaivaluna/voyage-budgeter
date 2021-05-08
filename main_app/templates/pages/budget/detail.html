@@ -2,8 +2,10 @@
 {% block picture %}
 {% if budget.theme == 'Golden Retriever Puppies' %}
 style="background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.wallpaperscraft.com%2Fimage%2Fpuppy_dog_cute_144724_3840x2160.jpg&f=1&nofb=1')"
-{% else %}
+{% elif budget.theme == 'Baby Kittens' %}
 style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgetwallpapers.com%2Fwallpaper%2Ffull%2F8%2Ff%2F4%2F784967-cute-cat-wallpapers-2048x1536-windows-10.jpg&f=1&nofb=1')"
+{% else %}
+class="home-background"
 {% endif %}
 {% endblock %}
 
@@ -37,45 +39,98 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
 {% block content %}
 {% if budget.theme == 'Golden Retriever Puppies' %}
 <h1 id="puppies-bg" class="display-3" >Details</h1>
-{% else %}
+{% elif budget.theme == 'Baby Kittens' %}
 <h1 id="kittens-bg" class="display-3" >Details</h1>
+{% else %}
+<h1 class="display-3" >Details about {{budget.name}}</h1>
 {% endif %}
 <br>
 <div class="row" id="detail-row">
     <div class="card" id="detail-card">
         <div class="card-content">
-            <div class="d-flex justify-content-between">
-                <h2 class="card-title m-4 text-center">{{ budget.name }}</h2>
+            <div class="d-flex justify-content-end">
                 <div class="d-flex m-1">
                     <h5 class="m-1"><a class="btn btn-warning" href="{% url 'update_budget' budget.id %}">Edit</a></h5>
                     <h5 class="m-1"><a class="btn btn-danger" href="{% url 'delete_budget' budget.id %}">Delete</a></h5>
                 </div>
             </div>
             <div class="container">
-                <h3>Funds Remaining: ${{ after_expenses_budget }}</h3>
-                <h3>Destination: {{budget.city}}, {{ budget.trip_destination }}</h3>
-                <h3>Description: {{ budget.trip_description }}</h3>
+                <div class="container row g-3">
+                    <div class="col-md-6">
+                        <h4 class="display-6">Destination</h4>
+                        <h3>{{budget.city}}, {{budget.trip_destination}}</h3>
+                        <hr />
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="display-6">Description</h4>
+                        <h3>{{budget.trip_description}}</h3>
+                        <hr />
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="display-6">Initial Budget</h4>
+                        <h3>${{budget.initial_funds}}.00</h3>
+                        <hr />
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="display-6">Total Spent</h4>
+                        <h3>${{budget.total_spent}}</h3>
+                        <hr />
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="display-6">Remaining Funds</h4>
+                        <h3>${{budget.remaining_funds}}</h3>
+                        <hr />
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="display-6">Percentage Remaining</h4>
+                        {% if budget.percentage_difference == None %}
+                        <h3>100%</h3>
+                        {% else %}
+                        <h3>{{ budget.percentage_difference }}0%</h3>
+                        {% endif %}
+                        <hr />
+                    </div>
+
+                    <h1 class="display-4 col-md-12 text-center mt-5">Weather in {{budget.city}}</h1><br>
+                    <div class="col-md-6">
+                        <h4 class="display-6">Current Temp.</h4>
+                        <h3>{{ weather.temperature }}° F</h3>
+                        <hr />
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="display-6">Description</h4>
+                        <h3>{{ weather.description }}</h3>
+                        <hr />
+                    </div>
+
+                </div>
             </div>
         </div>   
-        <div class="container">
-            <h3>Current Weather in {{budget.city}}, {{ budget.trip_destination }}</h3>
-            <h3>{{ weather.temperature }}° F</h3>
-            <h3>{{ weather.description }}</h3>
-            <figure class="image is-50x50">
-                <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="Image">
-            </figure>
-        </div>
         
         <div class="container">
-            <h3 class="text-center">Add Expense</h3>
+            <h3 class="display-4 text-center mt-5">Add Expense</h3><br>
                 
-            <form action="{% url 'add_expense' budget.id %}" method="post">
+            <form action="{% url 'add_expense' budget.id %}" method="post" class="row g-3">
                 {% csrf_token %}
-                <input type="date" name="date" class="form-control" placeholder="Select Date"/>
-                <input type="text" name="name" class="form-control" placeholder="name" required>
-                <textarea type="text" name="description" class="form-control" placeholder="description" required></textarea>
-                $<input type="number" step="any" name="amount" placeholder="amount" min="0" oninput="validity.valid||(value='');" required>
-                <input type="submit" class="btn btn-danger" value="Add Expense">
+                <div class="col-md-6">
+                    <label for="inputDate" class="col-form-label">Date</label>
+                    <input type="date" name="date" class="form-control" id="inputDate" placeholder="Select date..." required>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputName" class="col-form-label">Merchant Name</label>
+                    <input type="text" name="name" class="form-control" id="inputName" placeholder="E.g., Chic-Fil-A" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputDescription" class="col-form-label">Purchase Description</label>
+                    <input type="text" name="description" class="form-control" id="inputDescription" placeholder="E.g., Fast Food" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputAmount" class="col-form-label">Amount</label>
+                    <input type="number" step="any" name="amount" class="form-control" id="inputAmount" min="0" placeholder="E.g., 20" required>
+                </div>
+                <div class="col-md-12 text-center mt-5 mb-5">
+                    <button type="submit" class="btn btn-danger">Add</button>
+                </div>
             </form>
 
 
@@ -89,48 +144,45 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th class="datefield">Date</th>
-                            <th>Name</th>
-                            <th>Amount</th>
-                            <th>Description</th>
+                            <th id="date">Date ▶</th>
+                            <th id="name">Name ▶</th>
+                            <th id="amount">Amount ▶</th>
+                            <th id="description">Description ▶</th>
+                            <th><i class="fas fa-trash-alt"></i></th>
                         </tr>
                     </thead>
                     <tbody>
-                    {% for expenditure in budget.expenditure_set.all %}
+                      {% for expenditure in budget.expenditure_set.all %}
                         <tr>
-                            <td>{{expenditure.date}}</td>
+                            <td>{{expenditure.date|date:"m-d-Y"}}</td>
                             <td>{{expenditure.name}}</td>
                             <td>${{expenditure.amount}}</td>
                             <td>{{ expenditure.description}}</td>
                             <td><a href="{% url 'remove_expense' budget.id expenditure.id %}" class="btn btn-danger">Delete</a></td>
                         </tr>
-                    {% endfor %}
+                        {% endfor %}
                     </tbody>
-                    {% if total_expenses > 0 %}
-                    <tr>
-                        <td>Total:</td>
-                        <td></td>
-                        <td>${{ total_expenses }}</td>
-                        <td></td>
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td colspan="4">You haven't made any purchases yet.</td>
-                    </tr>
-                    {% endif %}
                 </table>
+                {% if budget.total_spent == 0 %}
+                <h4>No purchases have been made.</h4>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
 
-<div class="container d-flex">
+<h1 class="display-4 text-center mt-5">Trip Photos</h1>
+{% if budget.purchasephotos_set.all %}
+<div class="container d-flex flex-wrap">
     {% for photo in budget.purchasephotos_set.all %}
-    <div class="card" style="width: 18rem;">
-        <img src="{{ photo.url }}" class="card-img-top">
+    <div>
+        <img class="img-thumbnail" src="{{ photo.url }}" style="max-width: 200px; min-width: 200px; height: auto" class="card-img-top">
     </div>
     {% endfor %}
 </div>
+{% else %}
+<h1 class="display-6 text-center">No pictures have been added</h1>
+{% endif %}
 
 <div class="container m-5">
     <form action="{% url 'add_trip_photo' budget.id %}" enctype="multipart/form-data" method="POST" class="d-flex justify-content-center">
@@ -142,6 +194,11 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
 </div>
 
 </br>
+{% if budget.theme == 'Golden Retriever Puppies' or budget.theme == 'Baby Kittens' %}
+<div>
+    <h1 class="display-3 text-center">Some pictures you might like from the theme you selected</h1>
+</div>
+
 <div class="container" style="height: 400px; width: 400px;">
     <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <div class="carousel-inner">
@@ -165,13 +222,38 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
     </div>
 </div>
 <div>
-    <h1 class="text-center">Some pictures you might like from {{ budget.trip_destination }} above</h1>
+    <h1 class="display-3 text-center">Happy budgeting!</h1>
 </div>
+{% else %}
+<div>
+    <h1 class="display-3 text-center">Happy budgeting!</h1>
+</div>
+{% endif %}
+<script>
 
-<script>    
-    $( ".datefield" ).click(function() {
-  alert( "Handler for .click() called." );
-});
+    $('th').click(function() {
+        var table = $(this).parents('table').eq(0)
+        var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+        this.asc = !this.asc
+        if (!this.asc){
+            $(this).text($(this).text().slice(0,-1) + " ▲")
+            rows = rows.reverse()
+        } else {
+            $(this).text($(this).text().slice(0,-1) + " ▼")
 
+        }
+        for (var i = 0; i < rows.length; i++) {
+            table.append(rows[i])
+        }
+    })
+    function comparer(index) {
+        return function(a, b) {
+            var valA = getCellValue(a, index), valB = getCellValue(b, index)
+            return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+        }
+    }
+    function getCellValue(row, index){ 
+        return $(row).children('td').eq(index).text() 
+        }
 </script>
 {% endblock %}

@@ -55,7 +55,7 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
         {% for budget in results %}
         
         <div class="card text-center cards-in-index">
-            <div class="card-header"><a style="text-decoration: none;" href="{% url 'detail' budget.id %}"><h1>{{budget.name}}</h1></a>
+            <div class="card-header"><a style="text-decoration: none;" href="{% url 'detail' budget.id %}"><h1 class="display-3 text-primary">{{budget.name}}</h1></a>
                 <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="funds-tab" data-bs-toggle="tab" data-bs-target="#funds-{{budget.id}}" type="button" role="tab" aria-controls="funds-{{budget.id}}" aria-selected="true">Funds <i class="fas fa-money-bill-wave"></i></button>
@@ -64,7 +64,10 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
                     <button class="nav-link" id="expense-tab" data-bs-toggle="tab" data-bs-target="#expense-{{budget.id}}" type="button" role="tab" aria-controls="expense-{{budget.id}}" aria-selected="false">Expenses <i class="far fa-minus-square"></i></button>
                     </li>
                     <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-{{budget.id}}" type="button" role="tab" aria-controls="info-{{budget.id}}" aria-selected="false">Info</button>
+                    <button class="nav-link" id="pictures-tab" data-bs-toggle="tab" data-bs-target="#pictures-{{budget.id}}" type="button" role="tab" aria-controls="pictures-{{budget.id}}" aria-selected="false">Trip <i class="fas fa-camera"></i></button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-{{budget.id}}" type="button" role="tab" aria-controls="info-{{budget.id}}" aria-selected="false"><i class="fas fa-info"></i></button>
                     </li>
                 </ul>
                 <div class="tab-content card-body" id="myTabContent">
@@ -72,9 +75,12 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
                         
                         {% if budget.remaining_funds == None %}
                         <p class="h3" style="color: {{budget.color}}">Funds Remaining: ${{ budget.initial_funds }}</p>
+                        <p>You have {{ budget.percentage_difference }}% left from your initial funds</p>
                         {% else %}
                         <p class="h3" style="color: {{budget.color}}">Funds Remaining: ${{ budget.remaining_funds }}</p>
+                        <p>You have {{ budget.percentage_difference }}% left from your initial funds</p>
                         {% endif %}
+        
                         {% if budget.color == '#ff9966' %}
                         <br>
                         <p class=""><span class="h5" style="color: {{budget.color}}">WARNING!</span> You have spent more than half of your budget</p>
@@ -120,6 +126,7 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
                                 {% endif %}
                             </div>
                             <div class="tab-pane fade" id="add-expenses-{{budget.id}}" role="tabpanel" aria-labelledby="add-expenses-tab">
+        
                                 <form action="{% url 'add_expense' budget.id %}" method="post" class="row g-3">
                                     {% csrf_token %}
                                     <div class="col-md-6">
@@ -145,14 +152,70 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
                             </div>
                         </div>
                     </div>
+        
+                    <div class="tab-pane fade" id="pictures-{{budget.id}}" role="tabpanel" aria-labelledby="pictures-tab">
+                        <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link active" id="all-pictures-tab" data-bs-toggle="pill" data-bs-target="#all-pictures-{{budget.id}}" type="button" role="tab" aria-controls="all-pictures-{{budget.id}}" aria-selected="true">All Pictures</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                              <button class="nav-link" id="add-picture-tab" data-bs-toggle="pill" data-bs-target="#add-picture-{{budget.id}}" type="button" role="tab" aria-controls="add-picture-{{budget.id}}" aria-selected="false">Add Pic</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="tabContent">
+                            <div class="tab-pane fade show active" id="all-pictures-{{budget.id}}" role="tabpanel" aria-labelledby="trip-info-tab">
+                                <div class="container d-flex">
+                                    {% if budget.purchasephotos_set.all %}
+                                    {% for photo in budget.purchasephotos_set.all %}
+                                    <div class="card" style="width: 18rem;">
+                                        <img src="{{ photo.url }}" class="card-img-top">
+                                    </div>
+                                    {% endfor %}
+                                    {% else %}
+                                    <h1 class="display-6 text-center">No pictures have been added</h1>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="add-picture-{{budget.id}}" role="tabpanel" aria-labelledby="more-info-tab">
+                                <div class="container d-flex flex-column">
+                                    <form action="{% url 'add_trip_photo' budget.id %}" enctype="multipart/form-data" method="POST">
+                                        {% csrf_token %}
+                                        <input type="file" name="photo-file">
+                                       
+                                        <input type="submit" class="btn btn-success" value="Upload Photo">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        
                     <div class="tab-pane fade" id="info-{{budget.id}}" role="tabpanel" aria-labelledby="info-tab">
-                        <h4>Destination</h4>
-                        <p>{{budget.trip_destination}}</p>
-                        <h4>Description</h4>
-                        <p>{{budget.trip_description}}</p>
-                        <a href="{% url 'detail' budget.id %}" class="btn btn-primary">View More</a>
-                        <a class="btn btn-warning" href="{% url 'update_budget' budget.id %}">Edit Details</a>
-                        <a class="btn btn-danger" href="{% url 'delete_budget' budget.id %}">Delete</a>
+        
+                        <div class="container row g-3">
+                            <div class="col-md-6">
+                                <h4 class="display-6">Destination</h4>
+                                <p>{{budget.trip_destination}}</p>
+                                <hr />
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="display-6">Description</h4>
+                                <p>{{budget.trip_description}}</p>
+                                <hr />
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="display-6">Initial Budget</h4>
+                                <p>${{budget.initial_funds}}.00</p>
+                                <hr />
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="display-6">Total Spent</h4>
+                                <p>${{budget.total_spent}}</p>
+                                <hr />
+                            </div>
+                            <div class="col-md-12">
+                                <a href="{% url 'detail' budget.id %}" class="btn btn-primary">View More</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -170,13 +233,16 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
 
 {% for budget in budgets %}
 <div class="card text-center cards-in-index">
-    <div class="card-header"><a style="text-decoration: none;" href="{% url 'detail' budget.id %}"><h1>{{budget.name}}</h1></a>
+    <div class="card-header"><a style="text-decoration: none;" href="{% url 'detail' budget.id %}"><h1 class="display-3 text-primary">{{budget.name}}</h1></a>
         <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
             <button class="nav-link active" id="funds-tab" data-bs-toggle="tab" data-bs-target="#funds-{{budget.id}}" type="button" role="tab" aria-controls="funds-{{budget.id}}" aria-selected="true">Funds <i class="fas fa-money-bill-wave"></i></button>
             </li>
             <li class="nav-item" role="presentation">
             <button class="nav-link" id="expense-tab" data-bs-toggle="tab" data-bs-target="#expense-{{budget.id}}" type="button" role="tab" aria-controls="expense-{{budget.id}}" aria-selected="false">Expenses <i class="far fa-minus-square"></i></button>
+            </li>
+            <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pictures-tab" data-bs-toggle="tab" data-bs-target="#pictures-{{budget.id}}" type="button" role="tab" aria-controls="pictures-{{budget.id}}" aria-selected="false">Trip <i class="fas fa-camera"></i></button>
             </li>
             <li class="nav-item" role="presentation">
             <button class="nav-link" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-{{budget.id}}" type="button" role="tab" aria-controls="info-{{budget.id}}" aria-selected="false"><i class="fas fa-info"></i></button>
@@ -258,58 +324,76 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
                                 <input type="number" step="any" name="amount" class="form-control" id="inputAmount" min="0" placeholder="E.g., 20" required>
                             </div>
                             <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-danger">Add Expense</button>
+                                <button type="submit" class="btn btn-danger">Add</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="info-{{budget.id}}" role="tabpanel" aria-labelledby="info-tab">
+
+            <div class="tab-pane fade" id="pictures-{{budget.id}}" role="tabpanel" aria-labelledby="pictures-tab">
                 <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link active" id="trip-info-tab" data-bs-toggle="pill" data-bs-target="#trip-info-{{budget.id}}" type="button" role="tab" aria-controls="trip-info-{{budget.id}}" aria-selected="true">Trip Info</button>
+                      <button class="nav-link active" id="all-pictures-tab" data-bs-toggle="pill" data-bs-target="#all-pictures-{{budget.id}}" type="button" role="tab" aria-controls="all-pictures-{{budget.id}}" aria-selected="true">All Pictures</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="more-info-tab" data-bs-toggle="pill" data-bs-target="#more-info-{{budget.id}}" type="button" role="tab" aria-controls="more-info-{{budget.id}}" aria-selected="false">More Info <i class="fas fa-camera"></i></button>
+                      <button class="nav-link" id="add-picture-tab" data-bs-toggle="pill" data-bs-target="#add-picture-{{budget.id}}" type="button" role="tab" aria-controls="add-picture-{{budget.id}}" aria-selected="false">Add Pic</button>
                     </li>
                 </ul>
                 <div class="tab-content" id="tabContent">
-                    <div class="tab-pane fade show active" id="trip-info-{{budget.id}}" role="tabpanel" aria-labelledby="trip-info-tab">
-                        <div class="container row g-3">
-                            <div class="col-md-6">
-                                <h4 class="display-6">Destination</h4>
-                                <p>{{budget.trip_destination}}</p>
-                            </div>
-                            <div class="col-md-6">
-                                <h4 class="display-6">Description</h4>
-                                <p>{{budget.trip_description}}</p>
-                            </div>
-                            <div class="col-md-6">
-                                <h4 class="display-6">Initial Budget</h4>
-                                <p>${{budget.initial_funds}}.00</p>
-                            </div>
-                            <div class="col-md-6">
-                                <h4 class="display-6">Total Spent</h4>
-                                <p>${{budget.total_spent}}</p>
-                            </div>
-                            <div class="col-md-12">
-                                <a href="{% url 'detail' budget.id %}" class="btn btn-primary">View More</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="more-info-{{budget.id}}" role="tabpanel" aria-labelledby="more-info-tab">
+                    <div class="tab-pane fade show active" id="all-pictures-{{budget.id}}" role="tabpanel" aria-labelledby="trip-info-tab">
                         <div class="container d-flex">
+                            {% if budget.purchasephotos_set.all %}
                             {% for photo in budget.purchasephotos_set.all %}
                             <div class="card" style="width: 18rem;">
                                 <img src="{{ photo.url }}" class="card-img-top">
                             </div>
                             {% endfor %}
+                            {% else %}
+                            <h1 class="display-6 text-center">No pictures have been added</h1>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="add-picture-{{budget.id}}" role="tabpanel" aria-labelledby="more-info-tab">
+                        <div class="container d-flex flex-column">
+                            <form action="{% url 'add_trip_photo' budget.id %}" enctype="multipart/form-data" method="POST">
+                                {% csrf_token %}
+                                <input type="file" name="photo-file">
+                               
+                                <input type="submit" class="btn btn-success" value="Upload Photo">
+                            </form>
                         </div>
                     </div>
                 </div>
-                <!-- <a href="{% url 'detail' budget.id %}" class="btn btn-primary">View More</a>
-                <a class="btn btn-warning" href="{% url 'update_budget' budget.id %}">Edit Details</a>
-                <a class="btn btn-danger" href="{% url 'delete_budget' budget.id %}">Delete</a> -->
+            </div>
+                
+            <div class="tab-pane fade" id="info-{{budget.id}}" role="tabpanel" aria-labelledby="info-tab">
+
+                <div class="container row g-3">
+                    <div class="col-md-6">
+                        <h4 class="display-6">Destination</h4>
+                        <p>{{budget.trip_destination}}</p>
+                        <hr />
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="display-6">Description</h4>
+                        <p>{{budget.trip_description}}</p>
+                        <hr />
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="display-6">Initial Budget</h4>
+                        <p>${{budget.initial_funds}}.00</p>
+                        <hr />
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="display-6">Total Spent</h4>
+                        <p>${{budget.total_spent}}</p>
+                        <hr />
+                    </div>
+                    <div class="col-md-12">
+                        <a href="{% url 'detail' budget.id %}" class="btn btn-primary">View More</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

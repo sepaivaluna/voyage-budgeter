@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
+
 {% block picture %}
 {% if user.is_authenticated %}
-
+class="home-background"
 {% else %}
 class="home-background"
 {% endif %}
 {% endblock %}
+
 {% load static %}
 {% block navbar %}
 <li class="nav-item">
@@ -36,6 +38,10 @@ class="home-background"
 
 <h1 class="display-3">Home</h1>
 
+<div id="logged-in-logo" class="container text-center">
+  <img src="{% static 'logo/home-logo.svg' %}" alt="home-logo" />
+</div>
+
 
 
 <script>
@@ -45,7 +51,7 @@ class="home-background"
         buttons: 'Hey',
         timer: 2500,
     })
-    localStorage.setItem("{{user.id}}-welcome", 'viewed');
+    localStorage.setItem("{{user.id}}-welcome", 'viewed')
     }
 </script>
 {% else %}
@@ -55,8 +61,10 @@ if ('{{user.id}}' === 'None') {
     title: "Welcome to Voyage Budgeter!",
     buttons: 'Hi',
     timer: 2500,
-})}
+}).then(localStorage.clear())
+}
 </script>
+
 <div class="container d-flex flex-column text-center">
     <div class="container text-center">
         <img src="{% static 'logo/home-logo.svg' %}" alt="home-logo" />

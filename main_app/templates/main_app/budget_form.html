@@ -26,31 +26,30 @@ class="home-background"
   {% endif %}
 {% endblock %}
 {% block content %}
-{% if object %}
-<h1>Edit {{object.name}}</h1>
-<br>
-{% else %}
 <h1 class="display-3">Add Budget</h1>
 <br>
-{% endif %}
 
-<form class="row g-3" method="post">
+<form class="row g-3" method="post" action="">
   {% csrf_token %}
+  <!-- <table>
+    {{ form.as_table }}
+  </table>
+  <input type="submit" value="Submit!" class="btn"> -->
   <div class="col-md-6">
-    <label for="inputEmail4" class="form-label">Name</label>
-    <input type="text" name="name" class="form-control" id="inputEmail4" placeholder="E.g., Coolest Budget">
+    <label for="inputName" class="form-label">Name</label>
+    <input type="text" name="name" class="form-control" id="inputName" placeholder="E.g., Coolest Budget">
   </div>
   <div class="col-md-6">
-    <label for="inputPassword4" class="form-label">Initial Funds</label>
-    <input type="number" name="initial_funds" class="form-control" id="inputPassword4" min="0" placeholder="E.g., 1000" oninput="validity.valid||(value='');">
+    <label for="inputFunds" class="form-label">Initial Funds</label>
+    <input type="number" name="initial_funds" class="form-control" id="inputFunds" min="0" placeholder="E.g., 1000" oninput="validity.valid||(value='');">
   </div>
   <div class="col-md-6">
-    <label for="inputAddress" class="form-label">Country</label>
-    <input type="text" name="trip_destination" class="form-control" id="inputAddress" placeholder="E.g., Cuba">
+    <label for="inputCountry" class="form-label">Country</label>
+    <input type="text" name="trip_destination" class="form-control" id="inputCountry" placeholder="E.g., Cuba">
   </div>
   <div class="col-md-6">
-    <label for="inputAddress2" class="form-label">City</label>
-    <input type="text" name="city" class="form-control" id="inputAddress2" placeholder="E.g., Havana">
+    <label for="inputCity" class="form-label">City</label>
+    <input type="text" name="city" class="form-control" id="inputCity" placeholder="E.g., Havana">
   </div>
   <div class="col-md-4">
     <label for="inputTheme" class="form-label">Theme</label>
@@ -58,20 +57,16 @@ class="home-background"
       <option selected>Choose...</option>
       <option value="Baby Kittens">Kittens</option>
       <option value="Golden Retriever Puppies">Puppies</option>
+      <option value="None">None</option>
     </select>
   </div>
   <div class="col-md-8">
-    <label for="inputZip" class="form-label">Description</label>
-    <textarea type="text" name="trip_description" class="form-control" id="inputZip" placeholder="E.g., Going to celebrate my graduation from G.A!"></textarea>
+    <label for="inputDescription" class="form-label">Description</label>
+    <textarea type="text" name="trip_description" class="form-control" id="inputDescription" placeholder="E.g., Going to celebrate my graduation from G.A!"></textarea>
   </div>
   <div class="col-12 text-center">
-    {% if object %}
-      <button type="submit" class="btn btn-success">Save</button>
-      <a class="btn btn-secondary" href="{% url 'detail' budget.id %}">Cancel</a>
-    {% else %}
       <button type="submit" class="btn btn-success">Create</button>
       <a class="btn btn-secondary" href="{% url 'budgets_index' %}">Cancel</a>
-    {% endif %}
   </div>
 </form>
 
