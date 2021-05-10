@@ -102,6 +102,8 @@ body, html {
 
 
 #logged-in-logo {
+    width: 300px;
+    height: auto;
     animation: roll 2s 1;
     transform: translateX(-100px) translateY(-60px);
 }
@@ -138,13 +140,6 @@ body, html {
     }
 }
 
-@media (max-width: 1200px) {
-    #logged-in-logo-id {
-        width: 350px;
-        height: auto;
-        margin-left: 67px;
-    }
-}
 @media (max-width: 992px) {
     #logged-in-logo-id {
         width: 350px;
