@@ -26,12 +26,7 @@ from decouple import config
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if config('ENVIRONMENT') == "production":
-    DEBUG=False
-    print("*!!!!!!*!!* DEBUG=", config('ENVIRONMENT'))
-if config('ENVIRONMENT') == "development":
-    DEBUG=True
-    print("*!!!!!!*!!* DEBUG=", DEBUG,  config('ENVIRONMENT'))
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
