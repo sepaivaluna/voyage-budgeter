@@ -1,0 +1,188 @@
+body, html {
+    height: 100%;
+}
+
+.navbar {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.nav-logo {
+    padding-left: 5px;
+}
+
+.carousel,
+.photos {
+    max-height: 500px;
+    max-width: 500px;
+}
+
+.fa-money-bill-wave {
+    color: green;
+}
+
+.fa-minus-square {
+    color: red;
+}
+
+.btn {
+    width: 120px !important;
+}
+
+#puppies-bg:before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f6d3";
+    display: inline-block;
+    padding-right: 3px;
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+#kittens-bg:before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f6be";
+    display: inline-block;
+    padding-right: 3px;
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+#body-container {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    font-weight: 300;    
+}
+
+#detail-row,
+#detail-card {
+    background-color: rgba(255,255,255,.45);
+}
+
+.navbar {
+    color: white;
+    padding: 0 5px;
+    background-image: linear-gradient(to right, #D5F2DA, #9CD9A5, #48CF64);
+}
+
+.cards-in-index {
+    background-color: rgba(239, 255, 241, 0.75);
+}
+
+#inputSearch:before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f688";
+    display: inline-block;
+    padding-right: 3px;
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+.home-background {
+    background-image: linear-gradient(to bottom,  white,#D5F2DA, #9CD9A5, #48CF64);
+}
+
+#update-form > p > label {
+    cursor: default;
+    margin-bottom: .5rem;
+    display: inline-block
+}
+
+#photo-form {
+    background-color: rgba(255,255,255,.45);
+    width: 380px;
+    margin: 0 auto;
+}
+
+#photo-input {
+    border: 1px solid gray
+}
+
+
+
+#logged-in-logo {
+    width: 350px;
+    height: auto;
+    animation: roll 2s 1;
+    transform: translateX(-100px) translateY(-60px);
+}
+#logged-in-logo-id {
+    width: 350px;
+    height: auto;
+}
+
+@keyframes roll {
+  0% {
+    transform: rotate(0);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(360deg) translateX(-100px) translateY(-60px);
+    opacity: 1;
+  }
+}
+
+#welcome-message {
+    animation: fade 3s 1;
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    75% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 992px) {
+    #logged-in-logo-id {
+        width: 350px;
+        height: auto;
+        margin-left: 67px;
+    }
+    #logged-in-logo {
+        width: 350px;
+    }
+}
+
+@media (max-width: 700px) {
+    #logged-in-logo-id {
+        width: 250px;
+        height: auto;
+        margin-left: 120px;
+        margin-top: 50px;
+        margin-bottom: -60px;
+    }
+    #logged-in-logo {
+        width: 250px;
+    }
+}
+
+@media (min-width: 768px) {
+    #update-form > p {
+        flex: 0 0 auto;
+        width: 50%;
+    }
+}
+
