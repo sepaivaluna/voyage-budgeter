@@ -284,7 +284,7 @@ def search_expenses(request, budget_id):
       context = {
         'results': results,
         'submitbutton': submitbutton,
-        'budget': budget
+        'budget': budget 
       }
       return render(request, 'pages/budget/filtered_expenses.html', context)
     
