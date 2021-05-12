@@ -99,13 +99,27 @@ body, html {
     display: inline-block
 }
 
+#photo-form {
+    background-color: rgba(255,255,255,.45);
+    width: 380px;
+    margin: 0 auto;
+}
+
+#photo-input {
+    border: 1px solid gray
+}
+
 
 
 #logged-in-logo {
-    width: 300px;
+    width: 350px;
     height: auto;
     animation: roll 2s 1;
     transform: translateX(-100px) translateY(-60px);
+}
+#logged-in-logo-id {
+    width: 350px;
+    height: auto;
 }
 
 @keyframes roll {
@@ -122,6 +136,7 @@ body, html {
 #welcome-message {
     animation: fade 3s 1;
 }
+
 @keyframes fade {
     0% {
         opacity: 0;
@@ -146,6 +161,9 @@ body, html {
         height: auto;
         margin-left: 67px;
     }
+    #logged-in-logo {
+        width: 350px;
+    }
 }
 
 @media (max-width: 700px) {
@@ -156,6 +174,9 @@ body, html {
         margin-top: 50px;
         margin-bottom: -60px;
     }
+    #logged-in-logo {
+        width: 250px;
+    }
 }
 
 @media (min-width: 768px) {
@@ -164,3 +185,4 @@ body, html {
         width: 50%;
     }
 }
+

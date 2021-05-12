@@ -136,8 +136,15 @@ class="home-background"
 
             <br/>
             <form action="{% url 'search_expenses' budget.id %}" method="GET" value="{{request.GET.q}}">
-            Search <input type="text" name="q" value="{{request.GET.q}}" placeholder="Search expenses"/>
-            <input type="submit" name="submit" value="Search"/>
+                <div class="row mb-3 col-md-12">
+                    <div class="col-md-6">
+                        <input id="inputSearch" type="text" name="q" value="{{request.GET.q}}" class="form-control" placeholder="Search expenses for {{ budget.name }}" required/>
+                    </div>
+                    <br><br>
+                    <div class="col-md-6">
+                        <input class="btn btn-success" type="submit" name="submit" value="Search" />
+                    </div>
+                </div>
             </form>
 
             <div>
@@ -184,12 +191,12 @@ class="home-background"
 <h1 class="display-6 text-center">No pictures have been added</h1>
 {% endif %}
 
-<div class="container m-5">
-    <form action="{% url 'add_trip_photo' budget.id %}" enctype="multipart/form-data" method="POST" class="d-flex justify-content-center">
+<div id="photo-form-div" class="m-5">
+    <form id="photo-form" action="{% url 'add_trip_photo' budget.id %}" enctype="multipart/form-data" method="POST" class="d-flex flex-column align-items-center">
         {% csrf_token %}
-        <input type="file" name="photo-file">
-        <br><br>
-        <input type="submit" class="btn btn-primary" value="Upload Photo">
+        <input id="photo-input" type="file" name="photo-file" class="m-5">
+        <!-- <br><br> -->
+        <input type="submit" class="btn btn-primary mb-5" value="Upload Photo">
     </form>
 </div>
 

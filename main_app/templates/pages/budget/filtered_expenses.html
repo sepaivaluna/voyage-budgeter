@@ -1,9 +1,20 @@
 {% extends 'base.html' %}
+{% block picture %}
+class="home-background"
+{% endblock %}
+
 {% block content %}
 
 <form action="{% url 'search_expenses' budget.id %}" method="GET" value="{{request.GET.q}}">
-    Search <input type="text" name="q" value="{{request.GET.q}}" placeholder="Search expenses"/>
-    <input type="submit" name="submit" value="Search"/>
+    <div class="row mb-3 col-md-12">
+        <div class="col-md-6">
+            <input id="inputSearch" type="text" name="q" value="{{request.GET.q}}" class="form-control" placeholder="Search expenses for {{ budget.name }}" required/>
+        </div>
+        <br><br>
+        <div class="col-md-6">
+            <input class="btn btn-success" type="submit" name="submit" value="Search" />
+        </div>
+    </div>
 </form>
 
     {% if submitbutton == 'Search' and request.GET.q != '' %}
@@ -34,10 +45,11 @@
           </table>
     </div>
     {% else %}
-    No search results for this query
+    <h1>No search results for '<b>{{ request.GET.q }}</b>'</h1>
+    <br>
     {% endif %}
     {% endif %}
 
-    <a href="{% url 'detail' budget.id %}" class="btn btn-secondary">Back to budget</a>
+    <a href="{% url 'detail' budget.id %}" class="btn btn-secondary">View Budget</a>
 
     {% endblock %}
