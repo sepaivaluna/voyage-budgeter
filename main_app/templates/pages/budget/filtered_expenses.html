@@ -3,8 +3,11 @@
 class="home-background"
 {% endblock %}
 {% block navbar %}
-<li class="nav-item">
+  <li class="nav-item">
     <a class="nav-link" href="{% url 'home' %}">Home <i class="fas fa-home"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'about' %}">About <i class="far fa-question-circle"></i></a>
   </li>
   {% if user.is_authenticated %}
   <li class="nav-item">
@@ -13,9 +16,11 @@ class="home-background"
   <li class="nav-item">
     <a class="nav-link" href="{% url 'create_budget' %}">Create New Budget <i class="fas fa-folder-plus"></i></a>
   </li>
+  <li><hr class="dropdown-divider"></li>
   <li class="nav-item">
     <a class="nav-link active" aria-current="page" href="#">Expenses for {{ budget.name }} <i class="fas fa-search-dollar"></i></i></a>
   </li>
+  <li><hr class="dropdown-divider"></li>
   <li class="nav-item">
     <a id="logout" class="nav-link" href="{% url 'logout' %}">Log Out <i class="fas fa-sign-out-alt"></i></a>
   </li>
@@ -27,9 +32,6 @@ class="home-background"
     <a class="nav-link" href="{% url 'login' %}">Log In <i class="fas fa-sign-in-alt"></i></a>
   </li>
   {% endif %}
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'about' %}">About <i class="far fa-question-circle"></i></a>
-  </li>
 {% endblock %}
 {% block content %}
 
@@ -50,7 +52,7 @@ class="home-background"
     <h1>Results for <b>{{ request.GET.q }}</b></h1>
     <br/><br/>
     <div>
-        <table class="table table-striped">
+        <table class="table table-hover table-striped">
             <thead>
                 <tr>
                     <th class="datefield">Date</th>

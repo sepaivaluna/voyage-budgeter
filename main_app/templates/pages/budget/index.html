@@ -3,13 +3,18 @@
 style="background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.parade.com%2Fwp-content%2Fuploads%2F2018%2F01%2Fpiggy-bank-dollar-finances-ftr.jpg&f=1&nofb=1')"
 {% endblock %}
 {% block navbar %}
-<li class="nav-item">
-    <a class="nav-link" href="{% url 'home' %}">Home <i class="fas fa-home"></i></a>
-  </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'home' %}">Home <i class="fas fa-home"></i></a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'about' %}">About <i class="far fa-question-circle"></i></a>
+    </li>
   {% if user.is_authenticated %}
+  <li><hr class="dropdown-divider"></li>
   <li class="nav-item">
     <a class="nav-link active" aria-current="page" href="{% url 'budgets_index' %}">View My Budgets <i class="fas fa-layer-group"></i></a>
   </li>
+  <li><hr class="dropdown-divider"></li>
   <li class="nav-item">
     <a class="nav-link" href="{% url 'create_budget' %}">Create New Budget <i class="fas fa-folder-plus"></i></a>
   </li>
@@ -24,9 +29,6 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
     <a class="nav-link" href="{% url 'login' %}">Log In <i class="fas fa-sign-in-alt"></i></a>
   </li>
   {% endif %}
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'about' %}">About <i class="far fa-question-circle"></i></a>
-  </li>
 {% endblock %}
 {% block content %}
 <h1 class="display-3 container">My Budgets</h1>
@@ -104,7 +106,7 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
                         </ul>
                         <div class="tab-content" id="tabContent">
                             <div class="tab-pane fade show active" id="all-expenses-{{budget.id}}" role="tabpanel" aria-labelledby="all-expenses-tab">
-                                <table class="table table-striped">
+                                <table class="table table-hover table-striped">
                                     <thead>
                                         <tr>
                                             <th id="date">Date ▶</th>
@@ -172,8 +174,8 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
                                 <div class="container d-flex">
                                     {% if budget.purchasephotos_set.all %}
                                     {% for photo in budget.purchasephotos_set.all %}
-                                    <div class="card" style="width: 18rem;">
-                                        <img src="{{ photo.url }}" class="card-img-top">
+                                    <div>
+                                        <img class="img-thumbnail rounded m-2" src="{{ photo.url }}" style="max-width: 200px; min-width: 200px; height: auto">
                                     </div>
                                     {% endfor %}
                                     {% else %}
@@ -284,7 +286,7 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
                 </ul>
                 <div class="tab-content" id="tabContent">
                     <div class="tab-pane fade show active" id="all-expenses-{{budget.id}}" role="tabpanel" aria-labelledby="all-expenses-tab">
-                        <table class="table table-striped">
+                        <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th id="date">Date ▶</th>
@@ -352,8 +354,8 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
                         <div class="container d-flex">
                             {% if budget.purchasephotos_set.all %}
                             {% for photo in budget.purchasephotos_set.all %}
-                            <div class="card" style="width: 18rem;">
-                                <img src="{{ photo.url }}" class="card-img-top">
+                            <div>
+                                <img class="img-thumbnail rounded m-2" src="{{ photo.url }}" style="max-width: 200px; min-width: 200px; height: auto">
                             </div>
                             {% endfor %}
                             {% else %}

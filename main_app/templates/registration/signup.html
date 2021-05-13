@@ -20,9 +20,11 @@ class="home-background"
     <a id="logout" class="nav-link" href="{% url 'logout' %}">Log Out <i class="fas fa-sign-out-alt"></i></a>
   </li>
   {% else %}
+  <li><hr class="dropdown-divider"></li>
   <li class="nav-item">
     <a class="nav-link active" aria-current="page" href="{% url 'signup' %}">Sign Up <i class="fas fa-users-cog"></i></a>
   </li>
+  <li><hr class="dropdown-divider"></li>
   <li class="nav-item">
     <a class="nav-link" href="{% url 'login' %}">Log In <i class="fas fa-sign-in-alt"></i></a>
   </li>
