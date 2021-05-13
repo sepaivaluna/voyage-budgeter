@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block picture %}
-class="home-background"
+class="home-background d-flex flex-column min-vh-100"
 {% endblock %}
 
 {% load static %}
@@ -43,14 +43,14 @@ class="home-background"
     <img id="logged-in-logo-id" src="{% static 'logo/moving-logo.svg' %}" alt="home-logo" />
   </div>
 
-  <div id="welcome-message" class="col-md-6 mt-5">
+  <div id="welcome-message" class="col-md-6 mt-5 mb-5">
     <h2 class="display-6 mb-5 text-center">Hello {{user.username}},<br><br> This app was built thinking about people like you! Please follow the links below to start using this app or to get to know more of our features.<br><br>Thanks!</h2>
     <div class="d-flex justify-content-evenly">
       <a href="{% url 'create_budget' %}" class="btn btn-success">New Budget</a>
       <a href="{% url 'budgets_index' %}" class="btn btn-success">My Budgets</a>
     </div>
     <div class="d-flex justify-content-evenly mt-5">
-      <a href="#" class="btn btn-info">About</a>
+      <a href="{% url 'about' %}" class="btn btn-info">About</a>
       <!-- <a href="#" class="btn btn-info">Review Us!</a> -->
       <a href="{% url 'logout' %}" class="btn btn-danger">Log Out</a>
     </div>

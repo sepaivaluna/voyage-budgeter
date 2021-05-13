@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block picture %}
 {% if budget.theme == 'Golden Retriever Puppies' %}
-style="background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.wallpaperscraft.com%2Fimage%2Fpuppy_dog_cute_144724_3840x2160.jpg&f=1&nofb=1')"
+class="d-flex flex-column min-vh-100" style="background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.wallpaperscraft.com%2Fimage%2Fpuppy_dog_cute_144724_3840x2160.jpg&f=1&nofb=1')"
 {% elif budget.theme == 'Baby Kittens' %}
-style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwallup.net%2Fwp-content%2Fuploads%2F2014%2F10%2Fanimal%2FCute_White_Cat_Full.jpg&f=1&nofb=1')"
+class="d-flex flex-column min-vh-100" style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwallup.net%2Fwp-content%2Fuploads%2F2014%2F10%2Fanimal%2FCute_White_Cat_Full.jpg&f=1&nofb=1')"
 {% else %}
-class="home-background"
+class="home-background d-flex flex-column min-vh-100"
 {% endif %}
 {% endblock %}
 
