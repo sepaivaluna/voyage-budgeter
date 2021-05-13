@@ -8,36 +8,48 @@
 
 <p>I hope this app is helpful as equally as it was fun for me to produce. Happy budgeting!<p>
 
+## Pitch Deck & Wireframes
+
+- [Voyage Budgeter Pitch](https://docs.google.com/presentation/d/1Ps3-J4FnsKgRtjAoiFuu3sYHmRhOuYgYofD_BKhfbLQ/edit#slide=id.p)
+
 ## User Stories
 
-- As a user
+- As a user I will be able to sign up
+- As a user I will be able to log in
+- As a user I will be able to create a new budget
+- As a user I want to be able to edit information on my budget
+- As a user I should be able to delete a budget
+- As a user I will be able to add expenses for each budget
+- As a user I want to be able to delete an expense
+- As a user I will be able to upload photos for each individual budget
+- As a user I want to see my funds lower with every purchase I make
+- As a user I want to be notified if I'm reaching my budget limit
+<!-- - As a user I will be able to leave a review for the website -->
 
 ## App Screenshots
 
-![screenshot](public/pictures/Main-Login.png)
-![screenshot](public/pictures/Home-Page.png)
-![screenshot](public/pictures/Profile.png)
-![screenshot](public/pictures/Comments.png)
+![screenshot](main_app/static/pictures/home.png)
+![screenshot](main_app/static/pictures/signup.png)
+![screenshot](main_app/static/pictures/addbudget.png)
+![screenshot](main_app/static/pictures/query-search.png)
+![screenshot](main_app/static/pictures/expense-added.png)
 
 ## App ERD
 
-![screenshot](public/pictures/ERD.png)
-
-
-## User Stories / Wireframe
-
-- [Trello](https://trello.com/b/z3AqpP5F/unit-2-project)
+![screenshot](main_app/static/pictures/erd.png)
 
 ## Technologies Used
 
-  - Javascript
+  - PostgreSQL
+  - Django
+  - Python
+  - Amazon S3
+  - Heroku
   - HTML
   - CSS
-  - Mongoose
-  - MongoDB
-  - Express
-  - Passport Google Oauth
-  - EJS
+  - Javascript - jQuery
+  - HTML
+  - CSS
   - Bootstrap
   - Popper
 
@@ -45,37 +57,10 @@
 
 <p>Click on the link below to check out Pic-Less!</p>
 
-[Pic-Less](https://frozen-dawn-11241.herokuapp.com)
+[Voyage Budgeter](https://voyagebudgeter.herokuapp.com)
 
 ## Next Steps
 
-<p>A future step is going to be to have the ability to dislike a post, since once you like it it doesn't give you the option to delete the like</p>
-<p>In addition, I would like to enable the <em>hide</em> feature (the eye with the slash), to be able to hide somebody's post when a user clicks on it. The post will be displayed to every user except the one that clicked on the eye.</p>
-<p>Also, I would like to add an unhide function which undoes what the hide button does</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-## App ERD
-
-![screenshot](main_app/static/logo/erd.png)
-
-## Technologies Used
-
-- PostgreSQL
-- Django
-- Python
-- Javascript - jQuery
-- HTML
-- CSS
-- Bootstrap
-- Popper
+<p>A future step is going to be implementing the ability to have budgets within budgets without limits to how deep you can go within each one.</p>
+<p>In addition, I would like to add a feature where you can login with an authenticator such as Google or Facebook.</p>
+<p>Also, I would like to include more functionality to the reviews section, so you can add comment in each comment and it have no limit to it as well.</p>
