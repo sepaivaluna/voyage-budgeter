@@ -106,10 +106,8 @@ body, html {
 }
 
 #photo-input {
-    border: 1px solid gray
+    border: 1px solid rgba(160, 155, 155, 0.7);
 }
-
-
 
 #logged-in-logo {
     width: 350px;

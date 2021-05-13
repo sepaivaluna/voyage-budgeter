@@ -24,6 +24,9 @@ style="background-image: url('https://external-content.duckduckgo.com/iu/?u=http
     <a class="nav-link" href="{% url 'login' %}">Log In <i class="fas fa-sign-in-alt"></i></a>
   </li>
   {% endif %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'about' %}">About <i class="far fa-question-circle"></i></a>
+  </li>
 {% endblock %}
 {% block content %}
 <h1 class="display-3 container">My Budgets</h1>

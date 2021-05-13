@@ -1,16 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block picture %}
-{% if user.is_authenticated %}
 class="home-background"
-{% else %}
-class="home-background"
-{% endif %}
 {% endblock %}
 
 {% load static %}
 {% block navbar %}
-<li class="nav-item">
+  <li class="nav-item">
     <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home <i class="fas fa-home"></i></a>
   </li>
   {% if user.is_authenticated %}
@@ -31,6 +27,9 @@ class="home-background"
     <a class="nav-link" href="{% url 'login' %}">Log In <i class="fas fa-sign-in-alt"></i></a>
   </li>
   {% endif %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'about' %}">About <i class="far fa-question-circle"></i></a>
+  </li>
 {% endblock %}
 {% block content %}
 

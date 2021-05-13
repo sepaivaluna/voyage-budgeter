@@ -3,8 +3,11 @@ from . import views
 
 urlpatterns = [
     
-    # home view
+    # home page
     path('', views.home, name="home"),
+
+    # about page
+    path('about/', views.about, name="about"),
     
     # budget urls
     path('budgets/', views.budgets_index, name='budgets_index'),

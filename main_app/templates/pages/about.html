@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block picture %}
+class="home-background"
+{% endblock %}
+
+{% load static %}
+{% block navbar %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'home' %}">Home <i class="fas fa-home"></i></a>
+  </li>
+  {% if user.is_authenticated %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'budgets_index' %}">View My Budgets <i class="fas fa-layer-group"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'create_budget' %}">Create New Budget <i class="fas fa-folder-plus"></i></a>
+  </li>
+  <li class="nav-item">
+    <a id="logout" class="nav-link" href="{% url 'logout' %}">Log Out <i class="fas fa-sign-out-alt"></i></a>
+  </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'signup' %}">Sign Up <i class="fas fa-users-cog"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'login' %}">Log In <i class="fas fa-sign-in-alt"></i></a>
+  </li>
+  {% endif %}
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="{% url 'about' %}">About <i class="far fa-question-circle"></i></a>
+  </li>
+{% endblock %}
+
+{% block content %}
+<h1 class="display-3">About</h1>
+<br>
+
+<article>
+    <h2 class="display-6 text-center">Voyage Budgeter</h2>
+    <p class="text-center">This application was created to help people budget their money better and easier than ever. This simple yet reliable app will warn you if you are reaching the last few cents of your budget and it'll even tell you the weather of the city you're travelling to! There are a couple of fun themes to select from in each budget you create if you decide to add it. I hope you enjoy this app as much as I enjoyed building it. <i>Happy budgeting!</i></p>
+</article>
+<article>
+    <h2 class="display-6 text-center">About Me</h2>
+    <p class="text-center">Full-stack software engineer with a passion for problem solving, creating original content, and developing fun applications. Originally born and raised in Peru, and moved to America at a young age. I believe I have the background to work on diverse projects and have the experience to help with creativity and problem solving.</p>
+    
+    <p class="text-center">
+        <i class="m-2 fab fa-linkedin-in"></i><a href="https://www.linkedin.com/in/sepaivaluna/" target="_blank">LinkedIn</a> 
+        <i class="m-2 fab fa-github-square"></i><a href="https://github.com/sepaivaluna" target="_blank">Github</a>
+        <i class="m-2 fas fa-laptop-code"></i><a target="_blank" href="https://codingsergio.com/">Portfolio</a>
+    </p>
+</article>
+<article>
+    <h2 class="display-6 text-center">Helpful Sources</h2>
+        <ul class="text-center" style="list-style-type: none; line-height: 150%;">
+            <li><i class="fas fa-link" style="color: darkgray; margin-right: 10px"></i><a href="www.w3schools.com" target="_blank">www.w3schools.com</a></li>
+            <li><i class="fas fa-link" style="color: darkgray; margin-right: 10px"></i><a href="https://css-tricks.com/" target="_blank">https://css-tricks.com/</a></li>
+            <li><i class="fab fa-youtube" style="color: red; margin-right: 10px;"></i><a href="https://www.youtube.com/watch?v=iIP4xss_jeQ" target="_blank">www.youtube.com</a></li>
+            <li><i class="fab fa-stack-overflow" style="color: orange; margin-right: 10px;"></i><a href="https://stackoverflow.com/" target="_blank">https://stackoverflow.com/</a></li>
+            <li><i class="fas fa-link" style="color: darkgray; margin-right: 10px"></i><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">https://developer.mozilla.org/en-US/docs/Web/JavaScript</a></li>
+        </ul>
+    </p>
+</article>
+
+{% endblock %}

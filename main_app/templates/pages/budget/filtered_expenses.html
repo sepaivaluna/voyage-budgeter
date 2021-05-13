@@ -14,7 +14,7 @@ class="home-background"
     <a class="nav-link" href="{% url 'create_budget' %}">Create New Budget <i class="fas fa-folder-plus"></i></a>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="#">Searching Expenses for {{ budget.name }} <i class="fas fa-search-dollar"></i></i></a>
+    <a class="nav-link active" aria-current="page" href="#">Expenses for {{ budget.name }} <i class="fas fa-search-dollar"></i></i></a>
   </li>
   <li class="nav-item">
     <a id="logout" class="nav-link" href="{% url 'logout' %}">Log Out <i class="fas fa-sign-out-alt"></i></a>
@@ -27,6 +27,9 @@ class="home-background"
     <a class="nav-link" href="{% url 'login' %}">Log In <i class="fas fa-sign-in-alt"></i></a>
   </li>
   {% endif %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'about' %}">About <i class="far fa-question-circle"></i></a>
+  </li>
 {% endblock %}
 {% block content %}
 

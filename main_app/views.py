@@ -27,6 +27,11 @@ FLICKR_SECRET = config('FLICKR_SECRET')
 def home(request):
   return render(request, 'pages/home.html')
 
+# Home
+def about(request):
+  return render(request, 'pages/about.html')
+
+
 # Sign Up form
 def signup(request):
   error_message = ''
