@@ -31,4 +31,5 @@ urlpatterns = [
 
     # reviews urls
     path('reviews/', views.reviews_index, name='reviews_index'),
+    path('reviews/create/', views.ReviewCreate.as_view(), name="create_review"),
 ]

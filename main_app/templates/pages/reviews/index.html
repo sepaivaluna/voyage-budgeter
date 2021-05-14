@@ -48,11 +48,11 @@ class="home-background d-flex flex-column min-vh-100"
   <h1>{{ review.title }}</h1>
   <p>{{ review.message }}</p>
 </div>
-<a class="btn btn-success" href="#">Add a review</a>
+<a class="btn btn-success" href="{% url 'create_review' %}">Add a review</a>
 {% endfor %}
 {% else %}
 <h1>no reviews</h1>
-<a class="btn btn-success" href="#">Add a review</a>
+<a class="btn btn-success" href="{% url 'create_review' %}">Add a review</a>
 {% endif %}
 <script>
    

@@ -299,6 +299,7 @@ def search_expenses(request, budget_id):
   else:
     return render(request, 'pages/budget/filtered_expenses.html')
 
+# Show all reviews
 def reviews_index(request):
   reviews = Review.objects.all()
   
@@ -306,3 +307,12 @@ def reviews_index(request):
     'reviews': reviews,
   }
   return render(request, 'pages/reviews/index.html', context)
+
+# Add review
+class ReviewCreate(LoginRequiredMixin, CreateView):
+  model = Review
+  fields = ['title', 'rating', 'message']
+
+  def form_valid(self, form):
+    form.instance.user = self.request.user
+    return super().form_valid(form)
