@@ -52,6 +52,7 @@
   - CSS
   - Bootstrap
   - Popper
+  - SweetAlert
 
 ## Getting Started
 
