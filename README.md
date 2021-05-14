@@ -56,7 +56,7 @@
 
 ## Getting Started
 
-<p>Click on the link below to check out Pic-Less!</p>
+<p>Click on the link below to check out Voyage Budgeter!</p>
 
 [Voyage Budgeter](https://voyagebudgeter.herokuapp.com)
 
