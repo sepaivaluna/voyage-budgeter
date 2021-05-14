@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Budget, City, Expenditure, PurchasePhotos
+from .models import Budget, City, Expenditure, PurchasePhotos, Review
 from .forms import ExpenditureForm, CityForm, UpdateBudgetForm
 from django.db.models import Q
 import requests
@@ -298,3 +298,11 @@ def search_expenses(request, budget_id):
 
   else:
     return render(request, 'pages/budget/filtered_expenses.html')
+
+def reviews_index(request):
+  reviews = Review.objects.all()
+  
+  context = {
+    'reviews': reviews,
+  }
+  return render(request, 'pages/reviews/index.html', context)

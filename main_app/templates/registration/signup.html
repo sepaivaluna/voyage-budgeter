@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block picture %}
 class="home-background d-flex flex-column min-vh-100"
 {% endblock %}
@@ -32,48 +33,47 @@ class="home-background d-flex flex-column min-vh-100"
 {% endblock %}
 {% block content %}
 
-<h1 class="display-3">Sign Up</h1>
-<br>
+<div class="position-absolute top-50 start-50 translate-middle">
+  <h1 class="display-3 text-center">Sign up</h1>
+  <p class="text-center">It's quick and easy.</p>
+  <br>
 
-{% if error_message %}<p class="text-danger">{{ error_message }}</p>{% endif %}
+  {% if error_message %}<p class="text-danger">{{ error_message }}</p>{% endif %}
 
-<form method="post" action="{% url 'signup' %}">
-    {% csrf_token %}
-    <div class="row mb-3 col-md-12">
-      <label for="inputUsername" class="col-sm-2 col-form-label">Username</label>
-      <div class="col-sm-10">
-        <input type="text" name="username" class="form-control" id="inputUsername">
+  <form method="post" action="{% url 'signup' %}">
+      {% csrf_token %}
+      <div class=" form-floating">
+        <input style="min-width: 370px;" type="text" name="username" class="form-control" id="inputUsername" placeholder="Username">
+        <label for="inputUsername" >Username</label>
         <div class="m-2">
             <p>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</p>
         </div>
       </div>
-    </div>
-    <div class="row mb-3 col-md-12">
-      <label for="inputPassword1" class="col-sm-2 col-form-label">Password</label>
-      <div class="col-sm-10">
-        <input type="password" name="password1" class="form-control" id="inputPassword">
-        <div class="m-2">
-            <ul>
-              <li>Your password can’t be too similar to your other personal information.</li>
-              <li>Your password must contain at least 8 characters.</li>
-              <li>Your password can’t be a commonly used password.</li>
-              <li>Your password can’t be entirely numeric.</li>
-            </ul>
+        <div class=" form-floating">
+          <input type="password" name="password1" class="form-control" id="inputPassword" placeholder="Password">
+          <label for="inputPassword1" >Password</label>
+          <div class="m-2">
+              <ul>
+                <li>Your password can’t be too similar to your other personal information.</li>
+                <li>Your password must contain at least 8 characters.</li>
+                <li>Your password can’t be a commonly used password.</li>
+                <li>Your password can’t be entirely numeric.</li>
+              </ul>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="row mb-3 col-md-12">
-      <label for="inputPassword2" class="col-sm-2 col-form-label">Password confirmation</label>
-      <div class="col-sm-10">
-        <input type="password" name="password2" class="form-control" id="inputPassword2">
-        <div class="m-2">
-          <p>Enter the same password as before, for verification.</p>
+        <div class=" form-floating">
+          <input type="password" name="password2" class="form-control" id="inputPassword2" placeholder="Password confirmation">
+          <label for="inputPassword2" >Password confirmation</label>
+          <div class="m-2">
+            <p>Enter the same password as before, for verification.</p>
+          </div>
         </div>
+      <div class="col-md-12 text-center">      
+        <button style="min-width: 370px;" type="submit" class="btn btn-primary">Sign Up</button>
       </div>
-    </div>
-    <div class="col-md-12 text-center">      
-      <button type="submit" class="btn btn-primary">Sign Up</button>
-    </div>
-</form>
-
+  </form>
+  <div class="mt-3 text-center">
+    <p>Already have an account? <a href="{% url 'login' %}">Log in here</a>.</p>
+  </div>
+</div>
 {% endblock %}

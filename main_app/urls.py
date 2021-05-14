@@ -28,4 +28,7 @@ urlpatterns = [
     # search urls
     path(r'^$', views.search_budgets, name='search_budgets'),
     path('expenses/<int:budget_id>/', views.search_expenses, name='search_expenses'),
+
+    # reviews urls
+    path('reviews/', views.reviews_index, name='reviews_index'),
 ]

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block picture %}
+class="home-background d-flex flex-column min-vh-100"
+{% endblock %}
+
+{% load static %}
+{% block navbar %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'home' %}">Home <i class="fas fa-home"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'about' %}">About <i class="far fa-question-circle"></i></a>
+  </li>
+  <li><hr class="dropdown-divider"></li>
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="{% url 'reviews_index' %}">Reviews <i class="far fa-star"></i></a>
+  </li>
+  <li><hr class="dropdown-divider"></li>
+{% if user.is_authenticated %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'budgets_index' %}">View My Budgets <i class="fas fa-layer-group"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'create_budget' %}">Create New Budget <i class="fas fa-folder-plus"></i></a>
+  </li>
+  <li class="nav-item">
+    <a id="logout" class="nav-link" href="{% url 'logout' %}">Log Out <i class="fas fa-sign-out-alt"></i></a>
+  </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'signup' %}">Sign Up <i class="fas fa-users-cog"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'login' %}">Log In <i class="fas fa-sign-in-alt"></i></a>
+  </li>
+  {% endif %}
+{% endblock %}
+{% block content %}
+
+{% if reviews.count > 0 %}
+
+{% for review in reviews %}
+<div class="container">
+  <p>{{ review.user.username }}</p>
+  <hr>
+  <p>{{review.rating }}</p>
+  <h1>{{ review.title }}</h1>
+  <p>{{ review.message }}</p>
+</div>
+<a class="btn btn-success" href="#">Add a review</a>
+{% endfor %}
+{% else %}
+<h1>no reviews</h1>
+<a class="btn btn-success" href="#">Add a review</a>
+{% endif %}
+<script>
+   
+</script>
+
+
+{% endblock %}

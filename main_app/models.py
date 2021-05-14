@@ -1,11 +1,13 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.urls import reverse
+from datetime import date
 from django.contrib.auth.models import User
 
 # Create your models here.
 
 RELAX_THEMES = (('Baby Kittens', 'Baby Kittens'), ('Golden Retriever Puppies', 'Golden Retriever Puppies'), ('None','None'))
+RATING = (('1', '1'), ('2', '2'), ('3', '3'),('4', '4'),('5','5'))
 
 class City(models.Model):
     name = models.CharField(max_length=25)
@@ -36,6 +38,20 @@ class Budget(models.Model):
 
     class Meta:
         ordering = ['name']
+
+class Review(models.Model):
+    title = models.CharField(max_length=150, null=True)
+    rating = models.CharField(max_length=1, choices=RATING, default=RATING[0][0], null=True)
+    message = models.TextField(max_length=255, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField("date added", default=date.today)
+
+    def __str__(self):
+        return f'rating: {self.rating} on date: {self.date} by {self.user}'
+
+    class Meta:
+        ordering = ['-date']
+
 
 class Expenditure(models.Model):
     name = models.CharField(max_length=60)
