@@ -15,7 +15,7 @@
 ## User Stories
 
 - As a user I will be able to sign up
-- As a user I will be able to log in
+- As a user I will be able to log in and log out
 - As a user I will be able to create a new budget
 - As a user I want to be able to edit information on my budget
 - As a user I should be able to delete a budget
@@ -24,7 +24,8 @@
 - As a user I will be able to upload photos for each individual budget
 - As a user I want to see my funds lower with every purchase I make
 - As a user I want to be notified if I'm reaching my budget limit
-<!-- - As a user I will be able to leave a review for the website -->
+- As a user I will be able to leave a review for the website
+- As a user I want to be able to edit my review
 
 ## App Screenshots
 
