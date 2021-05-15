@@ -21,7 +21,7 @@ class="home-background d-flex flex-column min-vh-100"
   </li>
   <li><hr class="dropdown-divider"></li>
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="#">Delete {{ object.name }}<i class="fas fa-trash"></i></a>
+    <a class="nav-link active" aria-current="page" href="#">Delete review <i class="fas fa-trash"></i></a>
   </li>
   <li><hr class="dropdown-divider"></li>
   <li class="nav-item">
@@ -38,14 +38,14 @@ class="home-background d-flex flex-column min-vh-100"
 {% endblock %}
 {% block content %}
 <div class="container text-center">
-  <h1 class="display-3 mb-5 mt-5">Delete Budget</h1>
+  <h1 class="display-3 mb-5 mt-5">Delete Review</h1>
 
-  <h4 class="display-6 mt-5 mb-5">Are you sure you want to delete {{ object.name }}?</h4>
+  <h4 class="display-6 mt-5 mb-5">Are you sure you want to delete review with title: <b>{{ object.title }}</b>?</h4>
 
   <form action="" method="POST">
     {% csrf_token %}
     <input type="submit" value="Delete" class="btn btn-danger m-4">
-    <a class="btn btn-secondary m-4" href="{% url 'detail' budget.id %}">Cancel</a>
+    <a class="btn btn-secondary m-4" href="{% url 'reviews_index' %}">Cancel</a>
   </form>
 </div>
 {% endblock %}

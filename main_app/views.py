@@ -2,9 +2,9 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, DeleteView
 from .models import Budget, City, Expenditure, PurchasePhotos, Review
-from .forms import ExpenditureForm, CityForm, UpdateBudgetForm
+from .forms import ExpenditureForm, CityForm, UpdateBudgetForm, UpdateReviewForm
 from django.db.models import Q
 import requests
 from django.contrib.auth.decorators import login_required
@@ -312,7 +312,30 @@ def reviews_index(request):
 class ReviewCreate(LoginRequiredMixin, CreateView):
   model = Review
   fields = ['title', 'rating', 'message']
+  success_url = '/reviews/'
 
   def form_valid(self, form):
     form.instance.user = self.request.user
     return super().form_valid(form)
+
+# Update review
+@login_required
+def update_review(request, review_id):
+  review = Review.objects.get(id=review_id)
+
+  form = UpdateReviewForm(request.POST or None, instance=review)
+  
+  if form.is_valid():
+    form.save()
+    return redirect('reviews_index')
+  
+  context = {
+    'form': form,
+    'review': review,
+  }
+  return render(request, "main_app/review_update_form.html", context)
+
+# Delete review
+class ReviewDelete(LoginRequiredMixin, DeleteView):
+  model = Review
+  success_url = '/reviews/'

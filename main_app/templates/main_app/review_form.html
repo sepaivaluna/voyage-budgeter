@@ -1,19 +1,68 @@
 {% extends 'base.html' %}
-
-{% block content %}
-{% if object %}
-<h1>Edit <span class="teal-text">{{object.title}}</span></h1>
-{% else %}
-<h1>Add Review</h1>
-{% endif %}
-  <!-- Leaving the action empty makes the form post to the same url used to display it -->
-  <form action="" method="post">
-    <!-- Django requires the following for security purposes -->
-    {% csrf_token %}
-    <table>
-      <!-- Render the inputs inside of <tr>s & <td>s -->
-      {{ form.as_table }}
-    </table>
-    <input type="submit" value="Submit!" class="btn">
-  </form>
+{% block picture %}
+class="home-background d-flex flex-column min-vh-100"
+{% endblock %}
+{% block navbar %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'home' %}">Home <i class="fas fa-home"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'about' %}">About <i class="far fa-question-circle"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'reviews_index' %}">Reviews <i class="far fa-star"></i></a>
+  </li>
+  <li><hr class="dropdown-divider"></li>
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#">Add Review <i class="fas fa-plus"></i></a>
+  </li>
+  <li><hr class="dropdown-divider"></li>
+  {% if user.is_authenticated %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'budgets_index' %}">View My Budgets <i class="fas fa-layer-group"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'create_budget' %}">Create New Budget <i class="fas fa-folder-plus"></i></a>
+  </li>
+  <li class="nav-item">
+    <a id="logout" class="nav-link" href="{% url 'logout' %}">Log Out <i class="fas fa-sign-out-alt"></i></a>
+  </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'signup' %}">Sign Up <i class="fas fa-users-cog"></i></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'login' %}">Log In <i class="fas fa-sign-in-alt"></i></a>
+  </li>
+  {% endif %}
+  {% endblock %}
+  {% block content %}
+    <div class="position-absolute top-50 start-50 translate-middle text-center">
+        <h1 class="display-4">Create Review</h1>
+        <hr>
+        <form action="" method="post">
+          {% csrf_token %}
+            <div class="form-floating">
+                <select id="inputRating" name="rating" class="form-select" required>
+                    <option value="1" selected>⭐️</option>
+                    <option value="2">⭐️⭐️</option>
+                    <option value="3">⭐️⭐️⭐️</option>
+                    <option value="4">⭐️⭐️⭐️⭐️</option>
+                    <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
+                </select>
+                <label for="inputRating" class="form-label">Rating</label>
+            </div>
+            <div class="mt-2">
+                <textarea rows="10" type="text" name="message" class="form-control mb-3" placeholder="This is where you write your review. Explain what happened, and leave out offensive words. Keep your feedback honest, helpful, and constructive." required></textarea>
+            </div>
+            <div>
+                <p>Leave a title for your rating:</p>
+            </div>
+            <div class="form-floating">
+              <input style="min-width: 500px;" type="text" name="title" class="form-control mb-3" id="inputTitle" placeholder="Title" required>
+              <label for="inputTitle">Title</label>
+            </div>
+            <input type="submit" value="Add review" class="btn btn-success">
+        </form>
+    </div>
 {% endblock %}

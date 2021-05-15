@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block picture %} 
+{% block picture %}
 class="home-background d-flex flex-column min-vh-100"
 {% endblock %}
 {% block navbar %}
@@ -12,7 +12,7 @@ class="home-background d-flex flex-column min-vh-100"
   <li class="nav-item">
     <a class="nav-link" href="{% url 'reviews_index' %}">Reviews <i class="far fa-star"></i></a>
   </li>
-  {% if user.is_authenticated %}
+{% if user.is_authenticated %}
   <li class="nav-item">
     <a class="nav-link" href="{% url 'budgets_index' %}">View My Budgets <i class="fas fa-layer-group"></i></a>
   </li>
@@ -21,7 +21,7 @@ class="home-background d-flex flex-column min-vh-100"
   </li>
   <li><hr class="dropdown-divider"></li>
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="#">Delete {{ object.name }}<i class="fas fa-trash"></i></a>
+    <a class="nav-link active" aria-current="page" href="#">Edit review <i class="fas fa-star-half-alt"></i></a>
   </li>
   <li><hr class="dropdown-divider"></li>
   <li class="nav-item">
@@ -36,16 +36,17 @@ class="home-background d-flex flex-column min-vh-100"
   </li>
   {% endif %}
 {% endblock %}
+
 {% block content %}
-<div class="container text-center">
-  <h1 class="display-3 mb-5 mt-5">Delete Budget</h1>
+<h1 class="display-3">Edit Review with title: {{review.title}}</h1>
+<br>
 
-  <h4 class="display-6 mt-5 mb-5">Are you sure you want to delete {{ object.name }}?</h4>
-
-  <form action="" method="POST">
+<form id="update-form" class="row g-3" method="post" action="">
     {% csrf_token %}
-    <input type="submit" value="Delete" class="btn btn-danger m-4">
-    <a class="btn btn-secondary m-4" href="{% url 'detail' budget.id %}">Cancel</a>
-  </form>
-</div>
+      {{ form.as_p }}
+    <div class="col-12 text-center">
+        <button type="submit" class="btn btn-success">Save</button>
+        <a class="btn btn-secondary" href="{% url 'reviews_index' %}">Cancel</a>
+    </div>
+</form>
 {% endblock %}

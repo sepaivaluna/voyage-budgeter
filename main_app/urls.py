@@ -32,4 +32,6 @@ urlpatterns = [
     # reviews urls
     path('reviews/', views.reviews_index, name='reviews_index'),
     path('reviews/create/', views.ReviewCreate.as_view(), name="create_review"),
+    path('reviews/<int:review_id>/update/', views.update_review, name='update_review'),
+    path('reviews/<int:pk>/delete/', views.ReviewDelete.as_view(), name="delete_review"),
 ]

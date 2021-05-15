@@ -41,18 +41,47 @@ class="home-background d-flex flex-column min-vh-100"
 {% if reviews.count > 0 %}
 
 {% for review in reviews %}
-<div class="container">
-  <p>{{ review.user.username }}</p>
-  <hr>
-  <p>{{review.rating }}</p>
-  <h1>{{ review.title }}</h1>
-  <p>{{ review.message }}</p>
+<div class="container mr-5 mb-5 mt-5 bg-light p-3" style="max-width: 700px;">
+  <div class="justify-content-between d-flex">
+    <p class="text-start"><i>{{ review.user.username }}</i></p>
+    {% if user.username == review.user.username %}
+    <div>
+      <a href="{% url 'update_review' review.id %}">Edit</a>
+      <a href="{% url 'delete_review' review.id %}">Delete</a>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="d-flex justify-content-between">
+    {% if review.rating == '1' %}
+    <p><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></p>
+    {% elif review.rating == '2' %}
+    <p><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></p>
+    {% elif review.rating == '3' %}
+    <p><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></p>
+    {% elif review.rating == '4' %}
+    <p><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></p>
+    {% elif review.rating == '5' %}
+    <p><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></p>
+    {% endif %}
+    <p><i>{{ review.date }}</i></p>
+  </div>
+  <h1 class="display-6">{{ review.title }}</h1>
+  <div class="container">
+    <p class="text-start">{{ review.message }}</p>
+  </div>
 </div>
-<a class="btn btn-success" href="{% url 'create_review' %}">Add a review</a>
 {% endfor %}
+<div class="text-center">
+  <a style="min-width: 250px;" class="btn btn-success mb-5" href="{% url 'create_review' %}">Add a review</a>
+</div>
 {% else %}
-<h1>no reviews</h1>
-<a class="btn btn-success" href="{% url 'create_review' %}">Add a review</a>
+<div class="position-absolute top-50 start-50 translate-middle text-center">
+  <h1 class="display-3 text-center">No reviews yet</h1>
+  <div class="text-center m-5">
+    <a style="min-width: 250px;" class="btn btn-success" href="{% url 'create_review' %}">Add a review</a>
+  </div>
+</div>
 {% endif %}
 <script>
    

@@ -9,13 +9,16 @@ class="home-background d-flex flex-column min-vh-100"
   <li class="nav-item">
     <a class="nav-link" href="{% url 'about' %}">About <i class="far fa-question-circle"></i></a>
   </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'reviews_index' %}">Reviews <i class="far fa-star"></i></a>
+  </li>
 {% if user.is_authenticated %}
   <li class="nav-item">
     <a class="nav-link" href="{% url 'budgets_index' %}">View My Budgets <i class="fas fa-layer-group"></i></a>
   </li>
   <li><hr class="dropdown-divider"></li>
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'create_budget' %}">Edit {{ budget.name }} <i class="fas fa-pen"></i></i></a>
+    <a class="nav-link active" aria-current="page" href="#">Edit {{ budget.name }} <i class="fas fa-pen"></i></i></a>
   </li>
   <li><hr class="dropdown-divider"></li>
   <li class="nav-item">
