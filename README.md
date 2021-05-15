@@ -46,6 +46,8 @@
   - Python
   - Amazon S3
   - Heroku
+  - Weather API
+  - Flickr Api
   - HTML
   - CSS
   - Javascript - jQuery
